@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+use App\Rules\ProfessionalEmail;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -30,9 +30,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        if ($request->has('role') || $request->has('role_id')) {
-            abort(403,'Non autorisé');
-        }
+       
         $request->validate([
             'first_name'=>['required','string' , 'max:255'],
             'last_name'=>['required','nullable', 'string', 'max:255'],
