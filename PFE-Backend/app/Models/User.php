@@ -38,6 +38,21 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $hidden = ['password', 'remember_token'];
 
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'activated_at' => 'datetime',
+            'wants_newsletter' => 'boolean',
+            'password' => 'hashed',
+        ];
+    }
+
+    public function getNameAttribute(): string
+    {
+        return trim("{$this->first_name} {$this->last_name}");
+    }
+
     public function roles()
     {
         return $this->belongsToMany(Role::class);
