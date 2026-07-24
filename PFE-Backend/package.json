@@ -2,10 +2,12 @@
     "$schema": "https://www.schemastore.org/package.json",
     "private": true,
     "type": "module",
-    "scripts": {
-        "build": "vite build",
-        "dev": "vite"
-    },
+   "scripts": {
+    "dev": "concurrently \"npm run dev:assets\" \"php artisan serve\"",
+    "dev:assets": "vite"
+},
+
+
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",
         "@tailwindcss/vite": "^4.0.0",

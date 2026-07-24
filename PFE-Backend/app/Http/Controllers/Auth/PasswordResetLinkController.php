@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
-class PasswordResetLinkController extends Controller
+use Illuminate\Routing\Controller as BaseController;
+
+class PasswordResetLinkController extends BaseController
 {
     /**
      * Display the password reset link request view.

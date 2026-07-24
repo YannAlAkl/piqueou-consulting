@@ -14,7 +14,9 @@ use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
-class NewPasswordController extends Controller
+use Illuminate\Routing\Controller as BaseController;
+
+class NewPasswordController extends BaseController
 {
     /**
      * Display the password reset view.

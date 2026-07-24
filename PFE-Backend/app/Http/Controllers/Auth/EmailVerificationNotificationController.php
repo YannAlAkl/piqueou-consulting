@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class EmailVerificationNotificationController extends Controller
+use Illuminate\Routing\Controller as BaseController;
+
+class EmailVerificationNotificationController extends BaseController
 {
     /**
      * Send a new email verification notification.

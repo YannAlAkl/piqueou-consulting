@@ -13,7 +13,9 @@ use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
-class RegisteredUserController extends Controller
+use Illuminate\Routing\Controller as BaseController;
+
+class RegisteredUserController extends BaseController
 {
     /**
      * Display the registration view.
