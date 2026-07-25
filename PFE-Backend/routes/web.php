@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\adminController;
 use App\Http\Controllers\Admin\AnalaystController;
+use App\Http\Controllers\Admin\clientController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,10 +16,31 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [adminController::class, 'index'])->name('dashboard');
-    Route::get('/clients', [adminController::class, 'index'])->defaults('role', 'client')->name('client');
-    Route::get('/analysts', [adminController::class, 'index'])->defaults('role', 'analyst')->name('analyst');
-    /// Analyste Manager Routes
-    Route::get('/analysts/gestion',[AnalaystController::class,'index'])->name('analyst.index');
+    Route::get('/clients', [adminController::class, 'client'])->name('client');
+    Route::get('/analysts', [adminController::class, 'analyst'])->name('analyst');
+
+    /// Admin generic user management (for adminController)
+    Route::get('/users/{id}/edit', [adminController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{id}', [adminController::class, 'update'])->name('users.update');
+    Route::delete('/users/{id}', [adminController::class, 'destroy'])->name('users.destroy');
+
+    /// Analyst Management Routes
+    Route::get('/analysts/gestion', [AnalaystController::class, 'index'])->name('analyst.index');
+    Route::get('/analysts/create', [AnalaystController::class, 'create'])->name('analyst.create');
+    Route::post('/analysts', [AnalaystController::class, 'store'])->name('analyst.store');
+    Route::get('/analysts/{id}', [AnalaystController::class, 'show'])->name('analyst.show');
+    Route::get('/analysts/{id}/edit', [AnalaystController::class, 'edit'])->name('analyst.edit');
+    Route::put('/analysts/{id}', [AnalaystController::class, 'uptade'])->name('analyst.update');
+    Route::delete('/analysts/{id}', [AnalaystController::class, 'destroy'])->name('analyst.destroy');
+
+    /// Client Management Routes
+    Route::get('/clients/gestion', [clientController::class, 'index'])->name('client.index');
+    Route::get('/clients/create', [clientController::class, 'create'])->name('client.create');
+    Route::post('/clients', [clientController::class, 'store'])->name('client.store');
+    Route::get('/clients/{id}', [clientController::class, 'show'])->name('client.show');
+    Route::get('/clients/{id}/edit', [clientController::class, 'edit'])->name('client.edit');
+    Route::put('/clients/{id}', [clientController::class, 'uptade'])->name('client.update');
+    Route::delete('/clients/{id}', [clientController::class, 'destroy'])->name('client.destroy');
     });
 
 Route::middleware('auth')->group(function () {
