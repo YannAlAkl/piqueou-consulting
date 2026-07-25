@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\adminController;
+use App\Http\Controllers\Admin\AnalaystController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,9 +15,11 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [adminController::class, 'index'])->name('dashboard');
-    Route::get('/clients', [adminController::class, 'index'])->defaults('role', 'client')->name('clients');
-    Route::get('/analysts', [adminController::class, 'index'])->defaults('role', 'analyst')->name('analysts');
-});
+    Route::get('/clients', [adminController::class, 'index'])->defaults('role', 'client')->name('client');
+    Route::get('/analysts', [adminController::class, 'index'])->defaults('role', 'analyst')->name('analyst');
+    /// Analyste Manager Routes
+    Route::get('/analysts/gestion',[AnalaystController::class,'index'])->name('analyst.index');
+    });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
