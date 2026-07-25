@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class AdminDashboardController extends Controller
+class adminController extends Controller
 {
     public function index(Request $request): View
     {
@@ -18,8 +18,15 @@ class AdminDashboardController extends Controller
         $query = User::with('roles')
             ->whereHas('roles', fn ($q) => $q->whereIn('name', ['client', 'analyst']));
 
-        if (in_array($roleFilter, ['client', 'analyst'], true)) {
-            $query->whereHas('roles', fn ($q) => $q->where('name', $roleFilter));
+        if ($roleFilter === 'client') {
+            $query = User::with('roles')
+                ->whereHas('roles', fn ($q) => $q->where('name', 'client'));
+        } elseif ($roleFilter === 'analyst') {
+            $query = User::with('roles')
+                ->whereHas('roles', fn ($q) => $q->where('name', 'analyst'));
+        } else {
+            $query = User::with('roles')
+                ->whereHas('roles', fn ($q) => $q->whereIn('name', ['client', 'analyst']));
         }
 
         if (in_array($statusFilter, ['pending', 'active', 'inactive'], true)) {
@@ -46,6 +53,12 @@ class AdminDashboardController extends Controller
             'active' => (clone $managedUsersQuery)->where('account_status', 'active')->count(),
             'inactive' => (clone $managedUsersQuery)->where('account_status', 'inactive')->count(),
         ];
+
+        if ($roleFilter === 'client') {
+            return view('admin.dashboard-client', compact('users', 'stats', 'roleFilter', 'statusFilter', 'search'));
+        } elseif ($roleFilter === 'analyst') {
+            return view('admin.dashboard-analyste', compact('users', 'stats', 'roleFilter', 'statusFilter', 'search'));
+        }
 
         return view('admin.dashboard', compact('users', 'stats', 'roleFilter', 'statusFilter', 'search'));
     }
