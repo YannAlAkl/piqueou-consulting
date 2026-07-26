@@ -1,108 +1,65 @@
-@php
-    $analyst = $analyst ?? $user ?? null;
-@endphp
-
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Détails de l\'Analyste') }}
-        </h2>
-    </x-slot>
-
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6">
-                    @if($analyst)
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <h3 class="text-lg font-medium text-gray-900 mb-4">Informations personnelles</h3>
-                                <dl class="space-y-4">
-                                    <div>
-                                        <dt class="text-sm font-medium text-gray-500">Prénom</dt>
-                                        <dd class="text-sm text-gray-900">{{ $analyst->first_name }}</dd>
-                                    </div>
-                                    <div>
-                                        <dt class="text-sm font-medium text-gray-500">Nom</dt>
-                                        <dd class="text-sm text-gray-900">{{ $analyst->last_name }}</dd>
-                                    </div>
-                                    <div>
-                                        <dt class="text-sm font-medium text-gray-500">Email</dt>
-                                        <dd class="text-sm text-gray-900">{{ $analyst->email }}</dd>
-                                    </div>
-                                    <div>
-                                        <dt class="text-sm font-medium text-gray-500">Téléphone</dt>
-                                        <dd class="text-sm text-gray-900">{{ $analyst->phone ?? 'Non renseigné' }}</dd>
-                                    </div>
-                                    <div>
-                                        <dt class="text-sm font-medium text-gray-500">Entreprise</dt>
-                                        <dd class="text-sm text-gray-900">{{ $analyst->company_name ?? 'Non renseignée' }}</dd>
-                                    </div>
-                                </dl>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-medium text-gray-900 mb-4">Statut du compte</h3>
-                                <dl class="space-y-4">
-                                    <div>
-                                        <dt class="text-sm font-medium text-gray-500">Statut</dt>
-                                        <dd class="text-sm">
-                                            @php
-                                                $statusClasses = match($analyst->account_status) {
-                                                    'active' => 'bg-green-100 text-green-800',
-                                                    'inactive' => 'bg-red-100 text-red-800',
-                                                    default => 'bg-yellow-100 text-yellow-800',
-                                                };
-                                                $statusLabel = match($analyst->account_status) {
-                                                    'active' => 'Actif',
-                                                    'inactive' => 'Inactif',
-                                                    default => 'En attente',
-                                                };
-                                            @endphp
-                                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full {{ $statusClasses }}">
-                                                {{ $statusLabel }}
-                                            </span>
-                                        </dd>
-                                    </div>
-                                    <div>
-                                        <dt class="text-sm font-medium text-gray-500">Email vérifié</dt>
-                                        <dd class="text-sm text-gray-900">
-                                            @if($analyst->email_verified_at)
-                                                <span class="text-green-600">Oui</span>
-                                                <span class="text-xs text-gray-400 block">{{ $analyst->email_verified_at->format('d/m/Y H:i') }}</span>
-                                            @else
-                                                <span class="text-red-600">Non</span>
-                                            @endif
-                                        </dd>
-                                    </div>
-                                    <div>
-                                        <dt class="text-sm font-medium text-gray-500">Inscrit le</dt>
-                                        <dd class="text-sm text-gray-900">{{ $analyst->created_at->format('d/m/Y H:i') }}</dd>
-                                    </div>
-                                    <div>
-                                        <dt class="text-sm font-medium text-gray-500">Activé le</dt>
-                                        <dd class="text-sm text-gray-900">{{ $analyst->activated_at?->format('d/m/Y H:i') ?? '—' }}</dd>
-                                    </div>
-                                </dl>
-                            </div>
-                        </div>
+        <div class="max-w-2xl mx-auto px-4">
+            <div class="bg-white shadow rounded-lg overflow-hidden">
+                <div class="bg-blue-600 text-white p-6">
+                    <h1 class="text-2xl font-bold">{{ $analyst->first_name }} {{ $analyst->last_name }}</h1>
+                    <p class="text-blue-100">{{ $analyst->email }}</p>
+                </div>
 
-                        <div class="mt-8 flex gap-4">
-                            <a href="{{ route('admin.analyst.edit', $analyst->id) }}" class="inline-flex items-center px-4 py-2 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                Modifier
-                            </a>
-                            <a href="{{ route('admin.analyst.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                Retour à la liste
-                            </a>
+                <div class="p-6">
+                    <div class="mb-4">
+                        <label class="block text-sm font-semibold text-gray-600">Statut:</label>
+                        <span class="px-3 py-1 text-sm rounded inline-block mt-1
+                            @if ($analyst->account_status === 'active') bg-green-100 text-green-800
+                            @elseif ($analyst->account_status === 'pending') bg-yellow-100 text-yellow-800
+                            @else bg-red-100 text-red-800
+                            @endif">
+                            {{ $analyst->account_status === 'active' ? 'Actif' : ($analyst->account_status === 'pending' ? 'En attente' : 'Inactif') }}
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-600">Email</label>
+                            <p class="text-gray-900 mt-1">{{ $analyst->email }}</p>
                         </div>
-                    @else
-                        <p class="text-gray-500">Analyste introuvable.</p>
-                        <a href="{{ route('admin.analyst.index') }}" class="mt-4 inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-200">
-                            Retour à la liste
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-600">Téléphone</label>
+                            <p class="text-gray-900 mt-1">{{ $analyst->phone ?? '-' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-600">Entreprise</label>
+                            <p class="text-gray-900 mt-1">{{ $analyst->company_name ?? '-' }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-600">Inscrit le</label>
+                            <p class="text-gray-900 mt-1">{{ $analyst->created_at->format('d/m/Y') }}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 pt-4 border-t">
+                        <a href="{{ route('admin.analyst.edit', $analyst) }}"
+                            class="px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700">
+                            Modifier
                         </a>
-                    @endif
+                        <form method="POST" action="{{ route('admin.analyst.destroy', $analyst) }}"
+                            style="display:inline;" onsubmit="return confirm('Confirmer ?');">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                                Supprimer
+                            </button>
+                        </form>
+                        <a href="{{ route('admin.analyst.index') }}"
+                            class="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500">
+                            Retour
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </x-app-layout>
-
