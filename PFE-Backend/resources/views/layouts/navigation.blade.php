@@ -22,15 +22,11 @@
                         <x-nav-link :href="route('admin.analyst.index')" :active="request()->routeIs('admin.analyst.*')">
                             {{ __('Analystes') }}
                         </x-nav-link>
-                        {{-- <x-nav-link :href="route('admin.client.index')"
-                            :active="request()->routeIs('admin.clients.*')">
+                        <x-nav-link :href="route('admin.client.index')" :active="request()->routeIs('admin.client.*')">
                             {{ __('Clients') }}
-                        </x-nav-link> --}}
-
-
+                        </x-nav-link>
                     @endif
                 </div>
-            </div>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -82,7 +78,6 @@
                     </svg>
                 </button>
             </div>
-        </div>
     </div>
 
     <!-- Responsive Navigation Menu -->
@@ -95,6 +90,9 @@
                 <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
                     {{ __('Administration') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.client.index')" :active="request()->routeIs('admin.client.*')">
+                    {{ __('Clients') }}
+                </x-responsive-nav-link>
             @endif
         </div>
 
@@ -103,7 +101,6 @@
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
@@ -120,6 +117,5 @@
                     </x-responsive-nav-link>
                 </form>
             </div>
-        </div>
     </div>
 </nav>

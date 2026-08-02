@@ -1,0 +1,15 @@
+tu{
+    "name": "piqueou-consulting-showcase",
+    "private": true,
+    "scripts": {
+        "dev": "lite-server",
+        "build": "echo 'Static site - no build needed'"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "lite-server": "^2.6.1"
+    }
+}
+

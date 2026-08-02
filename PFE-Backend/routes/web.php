@@ -10,19 +10,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
+Route::get('/analysts', function () {
+    return view('analysts');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [adminController::class, 'index'])->name('dashboard');
-    Route::get('/clients', [adminController::class, 'client'])->name('client');
-    Route::get('/analysts', [adminController::class, 'analyst'])->name('analyst');
-
-    /// Admin generic user management (for adminController)
-    Route::get('/users/{id}/edit', [adminController::class, 'edit'])->name('users.edit');
-    Route::put('/users/{id}', [adminController::class, 'update'])->name('users.update');
-    Route::delete('/users/{id}', [adminController::class, 'destroy'])->name('users.destroy');
+Route::get('/analysts', [adminController::class, 'analyst'])->name('analyst');
 
     /// Analyst Management Routes
     Route::get('/analysts/gestion', [AnalaystController::class, 'index'])->name('analyst.index');
@@ -33,8 +27,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::put('/analysts/{id}', [AnalaystController::class, 'uptade'])->name('analyst.update');
     Route::delete('/analysts/{id}', [AnalaystController::class, 'destroy'])->name('analyst.destroy');
 
-    /// Client Management Routes
-    Route::get('/clients/gestion', [clientController::class, 'index'])->name('client.index');
+/// Client Management Routes
+    Route::get('/clients', [clientController::class, 'index'])->name('client.index');
     Route::get('/clients/create', [clientController::class, 'create'])->name('client.create');
     Route::post('/clients', [clientController::class, 'store'])->name('client.store');
     Route::get('/clients/{id}', [clientController::class, 'show'])->name('client.show');

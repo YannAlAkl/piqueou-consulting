@@ -1,0 +1,10 @@
+{
+    "server": {
+        "baseDir": ".",
+        "index": "index.html"
+    },
+    "browser": "default",
+    "watch": true,
+    "files": ["./**/*.html", "./assets/**/*.css", "./assets/**/*.js"]
+}
+
