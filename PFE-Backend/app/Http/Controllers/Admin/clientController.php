@@ -11,11 +11,11 @@ class clientController extends Controller
 {
    public function index(Request $request)
     {
-        $client = User::with('roles')->wherehas('roles',function($query){
+        $clients = User::with('roles')->wherehas('roles',function($query){
             $query->where('name','client');
         })->get();
 
-        return view('admin.client.index',compact('client'));
+        return view('admin.client.index',compact('clients'));
     }
 
     public function create()

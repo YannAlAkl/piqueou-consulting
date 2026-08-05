@@ -15,7 +15,7 @@ Route::get('/analysts', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [adminController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [adminController::class, 'analysts'])->name('dashboard');
 Route::get('/analysts', [adminController::class, 'analyst'])->name('analyst');
 
     /// Analyst Management Routes
