@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Spatie\Permission\Traits\HasRoles;
 
 
 class AuthenticatedSessionController extends Controller
@@ -31,12 +32,18 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        return redirect()->intended(
-            $user->hasRole('admin')
-                ? route('admin.dashboard', absolute: false)
-                : route('dashboard', absolute: false)
-        );
-    }
+        if($user->hasRole('admin')){
+            $redirectRoute = redirect()->route('analyst.index');
+        }elseIf($user->hasRole('analyst')){
+            $redirectRoute = redirect()->route('analyst.dashboard');
+        }elseIf($user->hasRole('client')){
+            $redirectRoute =   redirect()->route('client.dashboard');
+        }else{
+            Auth::logout();
+            return redirect()->route('login')->withErrors(['email' => 'You do not have permission to access this application.']);
+        }
+        return redirect()->intended($redirectRoute)
+;    }
 
     /**
      * Destroy an authenticated session.

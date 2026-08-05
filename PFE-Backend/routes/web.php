@@ -10,12 +10,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/analysts', function () {
-    return view('analysts');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/analysts', function () {
+//     return view('analysts');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [adminController::class, 'analysts'])->name('dashboard');
+    Route::get('/dashboard', [adminController::class, 'analyst'])->name('dashboard');
 Route::get('/analysts', [adminController::class, 'analyst'])->name('analyst');
 
     /// Analyst Management Routes
@@ -42,5 +42,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::middleware(['auth', 'verified', 'role:client'])->prefix('client')->name('client.')->group(function () {
+    Route::get('/dashboard-client', function () {
+        return view('client.dashboard');
+    })->name('dashboard');
+});
+
 
 require __DIR__.'/auth.php';
