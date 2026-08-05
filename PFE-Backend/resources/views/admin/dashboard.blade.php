@@ -1,12 +1,16 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Administration') }}
-        </h2>
-    </x-slot>
-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Administration</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+</head>
+<body>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <h2>Administration</h2>
+
             {{-- Statistiques --}}
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
@@ -35,18 +39,18 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <form method="GET" action="{{ route('admin.dashboard') }}" class="flex flex-wrap gap-4 items-end">
                     <div>
-                        <x-input-label for="search" value="Recherche" />
-                        <x-text-input
+                        <label for="search" class="block font-medium text-sm text-gray-700">Recherche</label>
+                        <input
                             id="search"
                             name="search"
                             type="text"
-                            class="mt-1 block w-full min-w-[220px]"
-                            :value="$search"
+                            value="{{ $search }}"
                             placeholder="Nom, email, entreprise..."
+                            class="mt-1 block w-full min-w-[220px] border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                         />
                     </div>
                     <div>
-                        <x-input-label for="role" value="Rôle" />
+                        <label for="role" class="block font-medium text-sm text-gray-700">Rôle</label>
                         <select id="role" name="role" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                             <option value="">Tous</option>
                             <option value="client" @selected($roleFilter === 'client')>Client</option>
@@ -54,7 +58,7 @@
                         </select>
                     </div>
                     <div>
-                        <x-input-label for="status" value="Statut" />
+                        <label for="status" class="block font-medium text-sm text-gray-700">Statut</label>
                         <select id="status" name="status" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                             <option value="">Tous</option>
                             <option value="pending" @selected($statusFilter === 'pending')>En attente</option>
@@ -62,7 +66,7 @@
                             <option value="inactive" @selected($statusFilter === 'inactive')>Inactif</option>
                         </select>
                     </div>
-                    <x-primary-button>Filtrer</x-primary-button>
+                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">Filtrer</button>
                     @if($search || $roleFilter || $statusFilter)
                         <a href="{{ route('admin.dashboard') }}" class="text-sm text-gray-600 hover:text-gray-900 underline">
                             Réinitialiser
@@ -168,4 +172,5 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</body>
+</html>

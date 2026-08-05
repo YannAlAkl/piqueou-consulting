@@ -2,17 +2,21 @@
     $client = $client ?? $user ?? null;
 @endphp
 
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Détails du Client') }}
-        </h2>
-    </x-slot>
-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Détails du Client</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+</head>
+<body>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
+                    <h2>Détails du Client</h2>
+
                     @if($client)
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
@@ -117,5 +121,5 @@
             </div>
         </div>
     </div>
-</x-app-layout>
-
+</body>
+</html>

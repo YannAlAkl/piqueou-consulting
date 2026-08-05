@@ -1,15 +1,17 @@
 <?php
 
-use App\Http\Controllers\Admin\adminController;
 use App\Http\Controllers\Admin\AnalaystController;
-use App\Http\Controllers\Admin\clientController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Authenticated routes
 Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
     $user = auth()->user();
 
@@ -55,14 +57,14 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::delete('/clients/{id}', [clientController::class, 'destroy'])->name('client.destroy');
 });
 
+Route::middleware(['auth', 'verified', 'role:client'])->get('/dashboard-client', function () {
+    return view('client.dashboard');
+})->name('client.dashboard');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-Route::middleware(['auth', 'verified', 'role:client'])->get('/dashboard-client', function () {
-    return view('client.dashboard');
-})->name('client.dashboard');
 
 require __DIR__ . '/auth.php';

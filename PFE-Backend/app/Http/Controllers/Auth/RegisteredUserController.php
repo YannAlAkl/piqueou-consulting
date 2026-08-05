@@ -30,9 +30,9 @@ class RegisteredUserController extends BaseController
      *
      * @throws ValidationException
      */
-    public function store(Request $request): RedirectResponse
-    {
-       
+        public function store(Request $request): RedirectResponse
+        {
+
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['nullable', 'string', 'max:255'],

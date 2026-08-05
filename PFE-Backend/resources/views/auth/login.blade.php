@@ -1,47 +1,67 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Connexion - Piqueou Consulting</title>
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+</head>
+<body>
+    <div class="login-box">
+        <h1>Connexion</h1>
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+@auth
+            <!-- Déconnexion -->
+            <div class="logout-box">
+                <p class="status-message">Vous êtes connecté(e) en tant que {{ auth()->user()->email }}.</p>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn-login">Se déconnecter</button>
+                </form>
+            </div>
+        @else
+            <!-- Statut de session -->
+            <div class="status-message">{{ session('status') }}</div>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+                <!-- Adresse email -->
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username">
+                    <div class="error-message">
+                        @foreach ($errors->get('email') ?? [] as $message)
+                            {{ $message }}<br>
+                        @endforeach
+                    </div>
+                </div>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+                <!-- Mot de passe -->
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                    <div class="error-message">
+                        @foreach ($errors->get('password') ?? [] as $message)
+                            {{ $message }}<br>
+                        @endforeach
+                    </div>
+                </div>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+                <!-- Se souvenir de moi -->
+                <div class="remember-me">
+                    <label>
+                        <input type="checkbox" name="remember">
+                        Se souvenir de moi
+                    </label>
+                </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+                <div class="form-actions">
+                    <a href="{{ route('password.request') }}">Mot de passe oublié ?</a>
+                    <button type="submit" class="btn-login">Se connecter</button>
+                </div>
+            </form>
+        @endauth
+    </div>
+</body>
+</html>

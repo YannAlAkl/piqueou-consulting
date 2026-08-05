@@ -16,7 +16,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function showLoginForm(): View
     {
         return view('auth.login');
     }

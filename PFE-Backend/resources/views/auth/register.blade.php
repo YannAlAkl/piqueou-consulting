@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inscription - Piqueou Consulting</title>
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+</head>
 <body>
 
     <div class="form-container">
@@ -12,25 +20,45 @@
                 <!-- first_name (NOT NULL) -->
                 <div class="form-group">
                     <label for="first_name">Prénom *</label>
-                    <input type="text" id="first_name" name="first_name" required maxlength="255">
+                    <input type="text" id="first_name" name="first_name" value="{{ old('first_name') }}" required maxlength="255">
+                    <div class="error-message">
+                        @foreach ($errors->get('first_name') ?? [] as $message)
+                            {{ $message }}<br>
+                        @endforeach
+                    </div>
                 </div>
 
                 <!-- last_name (NULL) -->
                 <div class="form-group">
                     <label for="last_name">Nom</label>
-                    <input type="text" id="last_name" name="last_name" maxlength="255">
+                    <input type="text" id="last_name" name="last_name" value="{{ old('last_name') }}" maxlength="255">
+                    <div class="error-message">
+                        @foreach ($errors->get('last_name') ?? [] as $message)
+                            {{ $message }}<br>
+                        @endforeach
+                    </div>
                 </div>
 
                 <!-- email (NOT NULL) -->
                 <div class="form-group full-width">
                     <label for="email">Adresse e-mail *</label>
-                    <input type="email" id="email" name="email" required maxlength="255">
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" required maxlength="255">
+                    <div class="error-message">
+                        @foreach ($errors->get('email') ?? [] as $message)
+                            {{ $message }}<br>
+                        @endforeach
+                    </div>
                 </div>
 
                 <!-- password (NOT NULL) -->
                 <div class="form-group full-width">
                     <label for="password">Mot de passe *</label>
                     <input type="password" id="password" name="password" required maxlength="255">
+                    <div class="error-message">
+                        @foreach ($errors->get('password') ?? [] as $message)
+                            {{ $message }}<br>
+                        @endforeach
+                    </div>
                 </div>
 
                 <div class="form-group full-width">
@@ -42,13 +70,13 @@
                 <!-- company_name (NULL) -->
                 <div class="form-group">
                     <label for="company_name">Nom de l'entreprise</label>
-                    <input type="text" id="company_name" name="company_name" maxlength="255">
+                    <input type="text" id="company_name" name="company_name" value="{{ old('company_name') }}" maxlength="255">
                 </div>
 
                 <!-- phone (NULL) -->
                 <div class="form-group">
                     <label for="phone">Téléphone</label>
-                    <input type="tel" id="phone" name="phone" maxlength="30">
+                    <input type="tel" id="phone" name="phone" value="{{ old('phone') }}" maxlength="30">
                 </div>
 
                 <!-- wants_newsletter (tinyint - default 0) -->
@@ -73,6 +101,7 @@
                 <div class="form-group full-width">
                     <button type="submit" class="submit-btn">S'inscrire</button>
                 </div>
+            </div>
         </form>
     </div>
 

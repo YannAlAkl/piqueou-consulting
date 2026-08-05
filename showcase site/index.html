@@ -25,8 +25,12 @@
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@6.6.0/css/flag-icons.min.css">
 
-  <!-- Main CSS File -->
+<!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
+  <style>
+    .account-icon { display: inline-flex; align-items: center; gap: 4px; }
+    .account-icon i.bi-person-circle { font-size: 1.6rem; color: #0d6efd; }
+  </style>
 
 </head>
 
@@ -66,8 +70,21 @@
           <li><a href="#work-process" data-i18n="nav.process">Notre Processus</a></li>
           <li><a href="newsletter-section.html" data-i18n="nav.newslettre">InfoLettre</a></li>
           <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
-          <li><a href="http://localhost:8000/login" class="btn btn-outline-primary btn-sm">Login</a></li>
-          <li><a href="http://localhost:8000/register" class="btn btn-primary btn-sm">Register</a></li>
+<li class="dropdown">
+<a href="#" class="account-icon"><i class="bi bi-person-circle"></i>
+              <i class="bi bi-chevron-down toggle-dropdown"></i>
+            </a>
+<ul>
+              <li><a href="http://localhost:8000/login">Login</a></li>
+              <li><a href="http://localhost:8000/register">Signup</a></li>
+              <li>
+                <form method="POST" action="http://localhost:8000/logout" style="margin:0;padding:0;">
+                  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                  <button type="submit" style="background:none;border:none;padding:0;cursor:pointer;font:inherit;color:inherit;">Logout</button>
+                </form>
+              </li>
+            </ul>
+          </li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>

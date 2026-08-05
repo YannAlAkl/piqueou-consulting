@@ -1,4 +1,12 @@
-<x-app-layout>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gestion des Clients</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+</head>
+<body>
     <div class="py-12">
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center mb-6">
@@ -67,4 +75,5 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</body>
+</html>
