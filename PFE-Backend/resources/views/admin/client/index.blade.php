@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestion des Clients</title>
+    <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body>
 
     <h1>Gestion des Clients</h1>
 
     <div>
-        <a href="/admin/clients/create">+ Nouveau client</a>
+        <a href="/admin/clients/create" class="btn-add">+ Nouveau client</a>
     </div>
 
-    <table border="1" cellpadding="8" cellspacing="0" style="width:100%; border-collapse:collapse;">
+    <table>
         <thead>
             <tr>
                 <th>Nom</th>
@@ -33,21 +34,21 @@
                 <td>{{ $client->phone ?? '—' }}</td>
                 <td>
                     @if($client->account_status === 'active')
-                        Actif
+                        <span class="status-active">Actif</span>
                     @elseif($client->account_status === 'inactive')
-                        Inactif
+                        <span class="status-inactive">Inactif</span>
                     @else
-                        En attente
+                        <span class="status-pending">En attente</span>
                     @endif
                 </td>
                 <td>{{ $client->created_at->format('d/m/Y H:i') }}</td>
                 <td>
-                    <a href="/admin/clients/{{ $client->id }}">Voir</a>
-                    <a href="/admin/clients/{{ $client->id }}/edit">Modifier</a>
-                    <form method="POST" action="/admin/clients/{{ $client->id }}" style="display:inline;" onsubmit="return confirm('Supprimer ce client ?')">
+                    <a href="/admin/clients/{{ $client->id }}" class="action-link">Voir</a>
+                    <a href="/admin/clients/{{ $client->id }}/edit" class="action-edit">Modifier</a>
+                    <form method="POST" action="/admin/clients/{{ $client->id }}" onsubmit="return confirm('Supprimer ce client ?')" class="inline-form">
                         @csrf
                         @method('DELETE')
-                        <button type="submit">Supprimer</button>
+                        <button type="submit" class="btn-delete">Supprimer</button>
                     </form>
                 </td>
             </tr>
@@ -59,10 +60,6 @@
         </tbody>
     </table>
 
-    @if(method_exists($clients, 'links'))
-        <div style="margin-top:20px;">
-            {{ $clients->links() }}
-        </div>
     @endif
 
 </body>
