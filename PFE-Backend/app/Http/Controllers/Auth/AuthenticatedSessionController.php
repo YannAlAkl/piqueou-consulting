@@ -30,22 +30,21 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
-    }
-$user = Auth::user();
+        $user = Auth::user();
 
-        if($user->hasRole('admin')){
-            $redirectRoute = redirect()->route('analyst.index');
-        }elseIf($user->hasRole('analyst')){
-            $redirectRoute = redirect()->route('analyst.dashboard');
-co        }elseIf($user->hasRole('client')){
-            $redirectRoute =   redirect()->route('client.dashboard');
-        }else{
-        Auth::logout();
-        return redirect()->route('login')->withErrors(['email' => 'You do not have permission to access this application.']);
+        if ($user->hasRole('admin')) {
+            $redirectRoute = route('admin.dashboard', absolute: false);
+        } elseif ($user->hasRole('analyst')) {
+            $redirectRoute = route('analyst.dashboard', absolute: false);
+        } elseif ($user->hasRole('client')) {
+            $redirectRoute = route('client.dashboard', absolute: false);
+        } else {
+            Auth::logout();
+            return redirect()->route('login')->withErrors(['email' => 'You do not have permission to access this application.']);
+        }
+
+        return redirect()->intended($redirectRoute);
     }
-        return redirect()->intended($redirectRoute)
-;    }
 
     /**
      * Destroy an authenticated session.
