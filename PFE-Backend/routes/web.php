@@ -10,13 +10,31 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/analysts', function () {
-//     return view('analysts');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
+    $user = auth()->user();
+
+    if ($user->hasRole('admin')) {
+        return redirect()->route('admin.dashboard');
+    }
+
+    if ($user->hasRole('analyst')) {
+        return redirect()->route('analyst.dashboard');
+    }
+
+    if ($user->hasRole('client')) {
+        return redirect()->route('client.dashboard');
+    }
+
+    abort(403);
+})->name('dashboard');
+
+Route::middleware(['auth', 'verified', 'role:analyst'])->prefix('analyst')->name('analyst.')->group(function () {
+    Route::get('/dashboard', [adminController::class, 'analysts'])->name('dashboard');
+});
 
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [adminController::class, 'analyst'])->name('dashboard');
-Route::get('/analysts', [adminController::class, 'analyst'])->name('analyst');
+    Route::get('/analysts', [adminController::class, 'analyst'])->name('analyst');
 
     /// Analyst Management Routes
     Route::get('/analysts/gestion', [AnalaystController::class, 'index'])->name('analyst.index');
@@ -27,7 +45,7 @@ Route::get('/analysts', [adminController::class, 'analyst'])->name('analyst');
     Route::put('/analysts/{id}', [AnalaystController::class, 'uptade'])->name('analyst.update');
     Route::delete('/analysts/{id}', [AnalaystController::class, 'destroy'])->name('analyst.destroy');
 
-/// Client Management Routes
+    /// Client Management Routes
     Route::get('/clients', [clientController::class, 'index'])->name('client.index');
     Route::get('/clients/create', [clientController::class, 'create'])->name('client.create');
     Route::post('/clients', [clientController::class, 'store'])->name('client.store');
@@ -35,7 +53,7 @@ Route::get('/analysts', [adminController::class, 'analyst'])->name('analyst');
     Route::get('/clients/{id}/edit', [clientController::class, 'edit'])->name('client.edit');
     Route::put('/clients/{id}', [clientController::class, 'uptade'])->name('client.update');
     Route::delete('/clients/{id}', [clientController::class, 'destroy'])->name('client.destroy');
-    });
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -43,11 +61,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'verified', 'role:client'])->prefix('client')->name('client.')->group(function () {
-    Route::get('/dashboard-client', function () {
-        return view('client.dashboard');
-    })->name('dashboard');
-});
+Route::middleware(['auth', 'verified', 'role:client'])->get('/dashboard-client', function () {
+    return view('client.dashboard');
+})->name('client.dashboard');
 
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -30,20 +30,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $user = Auth::user();
-
-        if($user->hasRole('admin')){
-            $redirectRoute = redirect()->route('analyst.index');
-        }elseIf($user->hasRole('analyst')){
-            $redirectRoute = redirect()->route('analyst.dashboard');
-        }elseIf($user->hasRole('client')){
-            $redirectRoute =   redirect()->route('client.dashboard');
-        }else{
-            Auth::logout();
-            return redirect()->route('login')->withErrors(['email' => 'You do not have permission to access this application.']);
-        }
-        return redirect()->intended($redirectRoute)
-;    }
+        return redirect()->intended(route('dashboard', absolute: false));
+    }
 
     /**
      * Destroy an authenticated session.
