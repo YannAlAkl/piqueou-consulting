@@ -32,18 +32,23 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        if ($user->hasRole('admin')) {
-            $redirectRoute = route('admin.dashboard', absolute: false);
-        } elseif ($user->hasRole('analyst')) {
-            $redirectRoute = route('analyst.dashboard', absolute: false);
-        } elseif ($user->hasRole('client')) {
-            $redirectRoute = route('client.dashboard', absolute: false);
-        } else {
-            Auth::logout();
-            return redirect()->route('login')->withErrors(['email' => 'You do not have permission to access this application.']);
+        if (! $user) {
+            return redirect()->route('login')->withErrors(['email' => 'Unable to authenticate user.']);
         }
 
-        return redirect()->intended($redirectRoute);
+        if ($user->hasRole('admin')) {
+            return redirect()->intended(route('admin.dashboard', absolute: false));
+        }
+
+        if ($user->hasRole('analyst')) {
+            return redirect()->intended(route('analyst.dashboard', absolute: false));
+        }
+
+        if ($user->hasRole('client')) {
+            return redirect()->intended(route('client.dashboard', absolute: false));
+        }
+
+        return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**
@@ -57,6 +62,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login');
     }
 }

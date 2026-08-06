@@ -62,6 +62,8 @@ class RegisteredUserController extends BaseController
 
         Auth::login($user);
 
-        return redirect('/');
+        $request->session()->regenerate();
+
+        return redirect()->route('dashboard');
     }
 }

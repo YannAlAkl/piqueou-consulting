@@ -12,7 +12,7 @@ Route::get('/', function () {
 });
 
 // Authenticated routes
-Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
+Route::middleware(['auth'])->get('/dashboard', function () {
     $user = auth()->user();
 
     if ($user->hasRole('admin')) {
@@ -30,11 +30,11 @@ Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
     abort(403);
 })->name('dashboard');
 
-Route::middleware(['auth', 'verified', 'role:analyst'])->prefix('analyst')->name('analyst.')->group(function () {
+Route::middleware(['auth', 'role:analyst'])->prefix('analyst')->name('analyst.')->group(function () {
     Route::get('/dashboard', [adminController::class, 'analysts'])->name('dashboard');
 });
 
-Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [adminController::class, 'analysts'])->name('dashboard');
     Route::get('/analysts', [adminController::class, 'analysts'])->name('analyst');
 
@@ -57,7 +57,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::delete('/clients/{id}', [clientController::class, 'destroy'])->name('client.destroy');
 });
 
-Route::middleware(['auth', 'verified', 'role:client'])->get('/dashboard-client', function () {
+Route::middleware(['auth', 'role:client'])->get('/dashboard-client', function () {
     return view('client.dashboard');
 })->name('client.dashboard');
 
