@@ -78,5 +78,22 @@ class AnalaystController extends Controller
         User::findOrFail($id)->delete();
         return redirect()->route('admin.analyst.index')->with('success', 'Analyste supprimé.');
     }
+
+    /**
+     * Activate an analyst account and send a verification email.
+     */
+    public function verify($id)
+    {
+        $analyst = User::findOrFail($id);
+
+        $analyst->account_status = 'active';
+        $analyst->activated_at = now();
+        $analyst->save();
+
+        // Envoyer l'email de vérification à l'analyste.
+        $analyst->sendEmailVerificationNotification();
+
+        return redirect()->route('admin.analyst.index')->with('success', 'Compte analyste activé et email de vérification envoyé.');
+    }
 }
 

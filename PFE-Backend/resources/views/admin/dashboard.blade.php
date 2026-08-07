@@ -1,176 +1,57 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Administration</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-</head>
-<body>
+@extends('layouts.app')
+
+@section('header')
+    <div class="flex flex-col gap-1">
+        <h2 class="text-xl font-semibold text-gray-800 leading-tight">Administration</h2>
+        <p class="text-sm text-gray-600">Accès rapide aux listes clients et analystes.</p>
+    </div>
+@endsection
+
+@section('content')
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <h2>Administration</h2>
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-6">
+            <section class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    <div>
+                        <h1 class="text-2xl font-semibold text-gray-900">Administration</h1>
+                        <p class="mt-2 text-sm text-gray-600">Sélectionnez la liste à gérer.</p>
+                    </div>
 
-            {{-- Statistiques --}}
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
-                    <p class="text-sm text-gray-500">Clients</p>
-                    <p class="text-2xl font-semibold text-gray-900">{{ $stats['clients'] }}</p>
-                </div>
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
-                    <p class="text-sm text-gray-500">Analystes</p>
-                    <p class="text-2xl font-semibold text-gray-900">{{ $stats['analysts'] }}</p>
-                </div>
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
-                    <p class="text-sm text-gray-500">En attente</p>
-                    <p class="text-2xl font-semibold text-yellow-600">{{ $stats['pending'] }}</p>
-                </div>
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
-                    <p class="text-sm text-gray-500">Actifs</p>
-                    <p class="text-2xl font-semibold text-green-600">{{ $stats['active'] }}</p>
-                </div>
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
-                    <p class="text-sm text-gray-500">Inactifs</p>
-                    <p class="text-2xl font-semibold text-red-600">{{ $stats['inactive'] }}</p>
-                </div>
-            </div>
-
-            {{-- Filtres --}}
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <form method="GET" action="{{ route('admin.dashboard') }}" class="flex flex-wrap gap-4 items-end">
-                    <div>
-                        <label for="search" class="block font-medium text-sm text-gray-700">Recherche</label>
-                        <input
-                            id="search"
-                            name="search"
-                            type="text"
-                            value="{{ $search }}"
-                            placeholder="Nom, email, entreprise..."
-                            class="mt-1 block w-full min-w-[220px] border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                        />
-                    </div>
-                    <div>
-                        <label for="role" class="block font-medium text-sm text-gray-700">Rôle</label>
-                        <select id="role" name="role" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                            <option value="">Tous</option>
-                            <option value="client" @selected($roleFilter === 'client')>Client</option>
-                            <option value="analyst" @selected($roleFilter === 'analyst')>Analyste</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="status" class="block font-medium text-sm text-gray-700">Statut</label>
-                        <select id="status" name="status" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                            <option value="">Tous</option>
-                            <option value="pending" @selected($statusFilter === 'pending')>En attente</option>
-                            <option value="active" @selected($statusFilter === 'active')>Actif</option>
-                            <option value="inactive" @selected($statusFilter === 'inactive')>Inactif</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">Filtrer</button>
-                    @if($search || $roleFilter || $statusFilter)
-                        <a href="{{ route('admin.dashboard') }}" class="text-sm text-gray-600 hover:text-gray-900 underline">
-                            Réinitialiser
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        <a href="{{ route('admin.analyst.index') }}" class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-left transition hover:border-indigo-500 hover:bg-white">
+                            <p class="text-sm text-slate-500">Analystes</p>
+                            <p class="mt-2 text-lg font-semibold text-slate-900">Voir la liste des analystes</p>
                         </a>
-                    @endif
-                </form>
-            </div>
-
-            {{-- Tableau des comptes --}}
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6">
-                    <h3 class="text-lg font-medium text-gray-900 mb-4">Comptes clients et analystes</h3>
-
-                    @if($users->isEmpty())
-                        <p class="text-gray-500">Aucun compte trouvé.</p>
-                    @else
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rôle</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email vérifié</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Entreprise</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Téléphone</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Newsletter</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activé le</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Inscrit le</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach($users as $user)
-                                        @php
-                                            $roleName = $user->role()?->name;
-                                            $statusClasses = match($user->account_status) {
-                                                'active' => 'bg-green-100 text-green-800',
-                                                'inactive' => 'bg-red-100 text-red-800',
-                                                default => 'bg-yellow-100 text-yellow-800',
-                                            };
-                                            $statusLabel = match($user->account_status) {
-                                                'active' => 'Actif',
-                                                'inactive' => 'Inactif',
-                                                default => 'En attente',
-                                            };
-                                            $roleLabel = match($roleName) {
-                                                'analyst' => 'Analyste',
-                                                'client' => 'Client',
-                                                default => ucfirst($roleName ?? '—'),
-                                            };
-                                        @endphp
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{{ $user->name }}</td>
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">{{ $user->email }}</td>
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm">
-                                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-800">
-                                                    {{ $roleLabel }}
-                                                </span>
-                                            </td>
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm">
-                                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full {{ $statusClasses }}">
-                                                    {{ $statusLabel }}
-                                                </span>
-                                            </td>
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
-                                                @if($user->email_verified_at)
-                                                    <span class="text-green-600">Oui</span>
-                                                    <span class="text-xs text-gray-400 block">{{ $user->email_verified_at->format('d/m/Y') }}</span>
-                                                @else
-                                                    <span class="text-red-600">Non</span>
-                                                @endif
-                                            </td>
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">{{ $user->company_name ?? '—' }}</td>
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">{{ $user->phone ?? '—' }}</td>
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
-                                                @if($user->wants_newsletter)
-                                                    Oui
-                                                    @if($user->newsletter_category)
-                                                        <span class="text-xs text-gray-400 block">{{ $user->newsletter_category }}</span>
-                                                    @endif
-                                                @else
-                                                    Non
-                                                @endif
-                                            </td>
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
-                                                {{ $user->activated_at?->format('d/m/Y H:i') ?? '—' }}
-                                            </td>
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
-                                                {{ $user->created_at->format('d/m/Y H:i') }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="mt-4">
-                            {{ $users->links() }}
-                        </div>
-                    @endif
+                        <a href="{{ route('admin.client.index') }}" class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-left transition hover:border-indigo-500 hover:bg-white">
+                            <p class="text-sm text-slate-500">Clients</p>
+                            <p class="mt-2 text-lg font-semibold text-slate-900">Voir la liste des clients</p>
+                        </a>
+                    </div>
                 </div>
-            </div>
+            </section>
+
+            <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+                <div class="rounded-3xl bg-white p-5 ring-1 ring-slate-200">
+                    <p class="text-sm text-slate-500">Clients</p>
+                    <p class="mt-3 text-3xl font-semibold text-slate-900">{{ $stats['clients'] }}</p>
+                </div>
+                <div class="rounded-3xl bg-white p-5 ring-1 ring-slate-200">
+                    <p class="text-sm text-slate-500">Analystes</p>
+                    <p class="mt-3 text-3xl font-semibold text-slate-900">{{ $stats['analysts'] }}</p>
+                </div>
+                <div class="rounded-3xl bg-white p-5 ring-1 ring-slate-200">
+                    <p class="text-sm text-slate-500">En attente</p>
+                    <p class="mt-3 text-3xl font-semibold text-amber-700">{{ $stats['pending'] }}</p>
+                </div>
+                <div class="rounded-3xl bg-white p-5 ring-1 ring-slate-200">
+                    <p class="text-sm text-slate-500">Actifs</p>
+                    <p class="mt-3 text-3xl font-semibold text-emerald-700">{{ $stats['active'] }}</p>
+                </div>
+                <div class="rounded-3xl bg-white p-5 ring-1 ring-slate-200">
+                    <p class="text-sm text-slate-500">Inactifs</p>
+                    <p class="mt-3 text-3xl font-semibold text-rose-700">{{ $stats['inactive'] }}</p>
+                </div>
+            </section>
         </div>
     </div>
-</body>
-</html>
+@endsection

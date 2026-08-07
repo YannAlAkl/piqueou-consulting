@@ -22,7 +22,7 @@ test('new users can register', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect('/');
+    $response->assertRedirect('/dashboard');
     $this->assertDatabaseHas('users', [
         'email' => $email,
         'first_name' => 'Test',

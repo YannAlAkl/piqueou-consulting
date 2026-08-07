@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\User;
 use Spatie\Permission\Traits\HasRoles;
 
 
@@ -26,6 +27,14 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && in_array($user->account_status, ['pending', 'inactive'])) {
+            return back()->withErrors([
+                'email' => 'Votre compte n\'est pas encore activé. Veuillez attendre la validation par un administrateur.',
+            ]);
+        }
+
         $request->authenticate();
 
         $request->session()->regenerate();

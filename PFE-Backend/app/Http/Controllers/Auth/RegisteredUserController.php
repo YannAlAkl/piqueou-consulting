@@ -1,21 +1,19 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-use App\Rules\ProfessionalEmail;
+
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Rules\ProfessionalEmail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
-use Illuminate\Routing\Controller as BaseController;
-
-class RegisteredUserController extends BaseController
+class RegisteredUserController extends Controller
 {
     /**
      * Display the registration view.
@@ -30,13 +28,14 @@ class RegisteredUserController extends BaseController
      *
      * @throws ValidationException
      */
-        public function store(Request $request): RedirectResponse
-        {
-
+    public function store(Request $request): RedirectResponse
+    {
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['nullable', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
+
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class, new ProfessionalEmail()],
+
             'password' => ['required', 'confirmed', Rules\Password::min(8)],
             'company_name' => ['nullable', 'string', 'max:255'],
             'phone' => ['nullable', 'string', 'max:30'],
@@ -60,10 +59,9 @@ class RegisteredUserController extends BaseController
 
         event(new Registered($user));
 
-        Auth::login($user);
+        // Ne pas connecter automatiquement un compte en attente d'approbation.
+        // Seul un administrateur peut activer le compte.
 
-        $request->session()->regenerate();
-
-        return redirect()->route('dashboard');
+        return redirect()->route('login')->with('status', 'Votre compte a bien été créé. Il doit être activé par un administrateur avant de pouvoir vous connecter.');
     }
 }

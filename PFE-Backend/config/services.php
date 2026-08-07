@@ -35,4 +35,7 @@ return [
         ],
     ],
 
+    // Email de l'administrateur recevant les notifications d'approbation.
+    'admin_email' => env('ADMIN_EMAIL', 'admin@test.com'),
+
 ];

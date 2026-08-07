@@ -35,16 +35,16 @@ Route::middleware(['auth', 'role:analyst'])->prefix('analyst')->name('analyst.')
 });
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [adminController::class, 'analysts'])->name('dashboard');
-    Route::get('/analysts', [adminController::class, 'analysts'])->name('analyst');
+    Route::get('/dashboard', [adminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/analysts', [AnalaystController::class, 'index'])->name('analyst.index');
 
     /// Analyst Management Routes
-    Route::get('/analysts/gestion', [AnalaystController::class, 'index'])->name('analyst.index');
     Route::get('/analysts/create', [AnalaystController::class, 'create'])->name('analyst.create');
     Route::post('/analysts', [AnalaystController::class, 'store'])->name('analyst.store');
     Route::get('/analysts/{id}', [AnalaystController::class, 'show'])->name('analyst.show');
     Route::get('/analysts/{id}/edit', [AnalaystController::class, 'edit'])->name('analyst.edit');
     Route::put('/analysts/{id}', [AnalaystController::class, 'uptade'])->name('analyst.update');
+    Route::post('/analysts/{id}/verify', [AnalaystController::class, 'verify'])->name('analyst.verify');
     Route::delete('/analysts/{id}', [AnalaystController::class, 'destroy'])->name('analyst.destroy');
 
     /// Client Management Routes
@@ -54,12 +54,17 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/clients/{id}', [clientController::class, 'show'])->name('client.show');
     Route::get('/clients/{id}/edit', [clientController::class, 'edit'])->name('client.edit');
     Route::put('/clients/{id}', [clientController::class, 'uptade'])->name('client.update');
+    Route::post('/clients/{id}/verify', [clientController::class, 'verify'])->name('client.verify');
     Route::delete('/clients/{id}', [clientController::class, 'destroy'])->name('client.destroy');
 });
 
 Route::middleware(['auth', 'role:client'])->get('/dashboard-client', function () {
     return view('client.dashboard');
 })->name('client.dashboard');
+
+// Activation d'un compte depuis l'email d'approbation de l'admin (URL signée).
+Route::middleware(['signed'])->get('/activate/{id}/{role}', [adminController::class, 'activate'])
+    ->name('activate.account');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

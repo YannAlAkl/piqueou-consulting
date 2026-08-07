@@ -93,5 +93,22 @@ class clientController extends Controller
         return redirect()->route('admin.client.index')->with('success', 'Client supprimé avec succès.');
     }
 
+    /**
+     * Activate a client account and send a verification email.
+     */
+    public function verify($id)
+    {
+        $client = User::findOrFail($id);
+
+        $client->account_status = 'active';
+        $client->activated_at = now();
+        $client->save();
+
+        // Envoyer l'email de vérification au client.
+        $client->sendEmailVerificationNotification();
+
+        return redirect()->route('admin.client.index')->with('success', 'Compte client activé et email de vérification envoyé.');
+    }
+
 }
 

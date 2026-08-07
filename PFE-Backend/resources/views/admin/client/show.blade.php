@@ -104,6 +104,14 @@
                         </div>
 
                         <div class="mt-8 flex gap-4">
+                            @if(in_array($client->account_status, ['pending', 'inactive']))
+                                <form method="POST" action="{{ route('admin.client.verify', $client->id) }}" onsubmit="return confirm('Activer ce compte et envoyer l\'email de vérification ?');">
+                                    @csrf
+                                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                        Activer
+                                    </button>
+                                </form>
+                            @endif
                             <a href="{{ route('admin.client.edit', $client->id) }}" class="inline-flex items-center px-4 py-2 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                 Modifier
                             </a>
