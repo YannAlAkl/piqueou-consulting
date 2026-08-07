@@ -1,17 +1,17 @@
 <?php
 
+use App\Http\Controllers\Admin\adminController;
 use App\Http\Controllers\Admin\AnalaystController;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\clientController;
+use App\Http\Controllers\Analyst\AnalystDashboardController;
+use App\Http\Controllers\Client\ClientDashboardController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Authenticated routes
 Route::middleware(['auth'])->get('/dashboard', function () {
     $user = auth()->user();
 
@@ -30,15 +30,11 @@ Route::middleware(['auth'])->get('/dashboard', function () {
     abort(403);
 })->name('dashboard');
 
-Route::middleware(['auth', 'role:analyst'])->prefix('analyst')->name('analyst.')->group(function () {
-    Route::get('/dashboard', [adminController::class, 'analysts'])->name('dashboard');
-});
-
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [adminController::class, 'dashboard'])->name('dashboard');
-    Route::get('/analysts', [AnalaystController::class, 'index'])->name('analyst.index');
 
-    /// Analyst Management Routes
+    Route::get('/dashboard', [adminController::class, 'dashboard'])->name('dashboard');
+
+    Route::get('/analysts', [AnalaystController::class, 'index'])->name('analyst.index');
     Route::get('/analysts/create', [AnalaystController::class, 'create'])->name('analyst.create');
     Route::post('/analysts', [AnalaystController::class, 'store'])->name('analyst.store');
     Route::get('/analysts/{id}', [AnalaystController::class, 'show'])->name('analyst.show');
@@ -47,7 +43,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/analysts/{id}/verify', [AnalaystController::class, 'verify'])->name('analyst.verify');
     Route::delete('/analysts/{id}', [AnalaystController::class, 'destroy'])->name('analyst.destroy');
 
-    /// Client Management Routes
     Route::get('/clients', [clientController::class, 'index'])->name('client.index');
     Route::get('/clients/create', [clientController::class, 'create'])->name('client.create');
     Route::post('/clients', [clientController::class, 'store'])->name('client.store');
@@ -56,13 +51,20 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/clients/{id}', [clientController::class, 'uptade'])->name('client.update');
     Route::post('/clients/{id}/verify', [clientController::class, 'verify'])->name('client.verify');
     Route::delete('/clients/{id}', [clientController::class, 'destroy'])->name('client.destroy');
+
+    Route::get('/users/{id}/edit', [adminController::class, 'edit'])->name('user.edit');
+    Route::put('/users/{id}', [adminController::class, 'update'])->name('user.update');
+    Route::delete('/users/{id}', [adminController::class, 'destroy'])->name('user.destroy');
 });
 
-Route::middleware(['auth', 'role:client'])->get('/dashboard-client', function () {
-    return view('client.dashboard');
-})->name('client.dashboard');
+Route::middleware(['auth', 'role:analyst'])->prefix('analyst')->name('analyst.')->group(function () {
+    Route::get('/dashboard', [AnalystDashboardController::class, 'dashboard'])->name('dashboard');
+});
 
-// Activation d'un compte depuis l'email d'approbation de l'admin (URL signée).
+Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->group(function () {
+    Route::get('/dashboard', [ClientDashboardController::class, 'dashboard'])->name('dashboard');
+});
+
 Route::middleware(['signed'])->get('/activate/{id}/{role}', [adminController::class, 'activate'])
     ->name('activate.account');
 

@@ -1,36 +1,61 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-<title>Modifier Analyste</title>
-</head>
-<body>
-    <h1>Modifier Analyste</h1>
+@extends('layouts.admin')
 
-    <form method="POST" action="/admin/analysts/{{ $analyst->id }}">
-        @csrf
-        @method('PUT')
+@section('title', 'Modifier un analyste')
+@section('subtitle', $analyst->email)
 
-        <label for="first_name">Prénom</label>
-        <input type="text" name="first_name" id="first_name" value="{{ $analyst->first_name }}">
+@section('content')
 
-        <label for="last_name">Nom</label>
-        <input type="text" name="last_name" id="last_name" value="{{ $analyst->last_name }}">
+    <div class="admin-card">
+        <form method="POST" action="{{ route('admin.analyst.update', $analyst->id) }}" class="admin-form">
+            @csrf
+            @method('PUT')
 
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" value="{{ $analyst->email }}">
+            <div class="admin-form-grid">
+                <div>
+                    <label for="first_name" class="admin-label">Prénom</label>
+                    <input type="text" name="first_name" id="first_name" class="admin-input"
+                           value="{{ old('first_name', $analyst->first_name) }}" required>
+                </div>
 
-        <label for="phone">Téléphone (optionnel)</label>
-        <input type="text" name="phone" id="phone" value="{{ $analyst->phone }}">
+                <div>
+                    <label for="last_name" class="admin-label">Nom</label>
+                    <input type="text" name="last_name" id="last_name" class="admin-input"
+                           value="{{ old('last_name', $analyst->last_name) }}" required>
+                </div>
 
-        <label for="account_status">Statut</label>
-        <select name="account_status" id="account_status">
-            <option value="active" {{ $analyst->account_status === 'active' ? 'selected' : '' }}>Actif</option>
-            <option value="inactive" {{ $analyst->account_status === 'inactive' ? 'selected' : '' }}>Inactif</option>
-            <option value="pending" {{ $analyst->account_status === 'pending' ? 'selected' : '' }}>En attente</option>
-        </select>
+                <div>
+                    <label for="email" class="admin-label">Email</label>
+                    <input type="email" name="email" id="email" class="admin-input"
+                           value="{{ old('email', $analyst->email) }}" required>
+                </div>
 
-        <button type="submit">Mettre à jour</button>
-    </form>
-</body>
-</html>
+                <div>
+                    <label for="phone" class="admin-label">Téléphone (optionnel)</label>
+                    <input type="text" name="phone" id="phone" class="admin-input"
+                           value="{{ old('phone', $analyst->phone) }}">
+                </div>
+
+                <div>
+                    <label for="company_name" class="admin-label">Entreprise (optionnel)</label>
+                    <input type="text" name="company_name" id="company_name" class="admin-input"
+                           value="{{ old('company_name', $analyst->company_name) }}">
+                </div>
+
+                <div>
+                    <label for="account_status" class="admin-label">Statut du compte</label>
+                    <select name="account_status" id="account_status" class="admin-select">
+                        <option value="active" {{ $analyst->account_status === 'active' ? 'selected' : '' }}>Actif</option>
+                        <option value="pending" {{ $analyst->account_status === 'pending' ? 'selected' : '' }}>En attente</option>
+                        <option value="inactive" {{ $analyst->account_status === 'inactive' ? 'selected' : '' }}>Inactif</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="admin-form-actions">
+                <button type="submit" class="admin-btn admin-btn-blue">Mettre à jour</button>
+                <a href="{{ route('admin.analyst.index') }}" class="admin-btn admin-btn-gray">Annuler</a>
+            </div>
+        </form>
+    </div>
+
+@endsection

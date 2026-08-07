@@ -3,39 +3,31 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ClientRegisteredMail;
+use App\Mail\NewClientAdminMail;
 use App\Models\User;
 use App\Rules\ProfessionalEmail;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rules;
-use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
     public function create(): View
     {
         return view('auth.register');
     }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws ValidationException
-     */
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['nullable', 'string', 'max:255'],
-
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class, new ProfessionalEmail()],
-
             'password' => ['required', 'confirmed', Rules\Password::min(8)],
             'company_name' => ['nullable', 'string', 'max:255'],
             'phone' => ['nullable', 'string', 'max:30'],
@@ -57,11 +49,14 @@ class RegisteredUserController extends Controller
 
         $user->assignRole('client');
 
-        event(new Registered($user));
+        $lienActivation = URL::signedRoute('activate.account', [
+            'id' => $user->id,
+            'role' => 'client',
+        ]);
 
-        // Ne pas connecter automatiquement un compte en attente d'approbation.
-        // Seul un administrateur peut activer le compte.
+        Mail::to($user->email)->send(new ClientRegisteredMail($user));
+        Mail::to(config('services.admin_email'))->send(new NewClientAdminMail($user, $lienActivation));
 
-        return redirect()->route('login')->with('status', 'Votre compte a bien été créé. Il doit être activé par un administrateur avant de pouvoir vous connecter.');
+        return redirect()->route('login')->with('status', 'Votre compte a bien été créé. Un email vous a été envoyé. Il doit être activé par un administrateur avant de pouvoir vous connecter.');
     }
 }

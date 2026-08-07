@@ -1,52 +1,73 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Créer un Client</title>
-</head>
-<body>
+@extends('layouts.admin')
 
-    <h1>Créer un Client</h1>
+@section('title', 'Créer un client')
+@section('subtitle', 'Ajout manuel d\'un compte client par l\'administrateur.')
 
-    <form method="POST" action="/clients">
+@section('content')
 
-        <label for="first_name">Prénom</label>
-        <input type="text" name="first_name" id="first_name">
+    <div class="admin-card">
+        <form method="POST" action="{{ route('admin.client.store') }}" class="admin-form">
+            @csrf
 
-        <label for="last_name">Nom</label>
-        <input type="text" name="last_name" id="last_name">
+            <div class="admin-form-grid">
+                <div>
+                    <label for="first_name" class="admin-label">Prénom</label>
+                    <input type="text" name="first_name" id="first_name" class="admin-input" value="{{ old('first_name') }}" required>
+                </div>
 
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email">
+                <div>
+                    <label for="last_name" class="admin-label">Nom</label>
+                    <input type="text" name="last_name" id="last_name" class="admin-input" value="{{ old('last_name') }}" required>
+                </div>
 
-        <label for="password">Mot de passe</label>
-        <input type="password" name="password" id="password">
+                <div>
+                    <label for="email" class="admin-label">Email</label>
+                    <input type="email" name="email" id="email" class="admin-input" value="{{ old('email') }}" required>
+                </div>
 
-        <label for="password_confirmation">Confirmer le mot de passe</label>
-        <input type="password" name="password_confirmation" id="password_confirmation">
+                <div>
+                    <label for="company_name" class="admin-label">Entreprise</label>
+                    <input type="text" name="company_name" id="company_name" class="admin-input" value="{{ old('company_name') }}" required>
+                </div>
 
-        <label for="phone">Téléphone (optionnel)</label>
-        <input type="text" name="phone" id="phone">
+                <div>
+                    <label for="password" class="admin-label">Mot de passe</label>
+                    <input type="password" name="password" id="password" class="admin-input" required>
+                </div>
 
-        <label for="company_name">Entreprise</label>
-        <input type="text" name="company_name" id="company_name">
+                <div>
+                    <label for="password_confirmation" class="admin-label">Confirmer le mot de passe</label>
+                    <input type="password" name="password_confirmation" id="password_confirmation" class="admin-input" required>
+                </div>
 
-        <label for="account_status">Statut</label>
-        <select name="account_status" id="account_status">
-            <option value="active">Actif</option>
-            <option value="inactive">Inactif</option>
-            <option value="pending" selected>En attente</option>
-        </select>
+                <div>
+                    <label for="phone" class="admin-label">Téléphone (optionnel)</label>
+                    <input type="text" name="phone" id="phone" class="admin-input" value="{{ old('phone') }}">
+                </div>
 
-        <label for="wants_newsletter">
-            <input type="checkbox" name="wants_newsletter" id="wants_newsletter" value="1">
-            Souhaite recevoir la newsletter
-        </label>
+                <div>
+                    <label for="account_status" class="admin-label">Statut du compte</label>
+                    <select name="account_status" id="account_status" class="admin-select">
+                        <option value="active">Actif</option>
+                        <option value="pending" selected>En attente</option>
+                        <option value="inactive">Inactif</option>
+                    </select>
+                </div>
+            </div>
 
-        <button type="submit">Créer le client</button>
+            <div>
+                <label for="wants_newsletter" class="admin-label">Newsletter</label>
+                <label class="inline-flex items-center gap-2 text-sm text-gray-700">
+                    <input type="checkbox" name="wants_newsletter" id="wants_newsletter" value="1" class="admin-checkbox">
+                    Souhaite recevoir la newsletter
+                </label>
+            </div>
 
-    </form>
+            <div class="admin-form-actions">
+                <button type="submit" class="admin-btn admin-btn-blue">Créer le client</button>
+                <a href="{{ route('admin.client.index') }}" class="admin-btn admin-btn-gray">Annuler</a>
+            </div>
+        </form>
+    </div>
 
-</body>
-</html>
-
+@endsection

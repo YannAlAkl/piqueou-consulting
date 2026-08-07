@@ -1,17 +1,24 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
+use App\Mail\AnalystAccountMail;
 use App\Models\User;
-use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AnalaystController extends Controller
 {
     public function index()
     {
-        $analystes = User::whereHas('roles', fn($q) => $q->where('name', 'analyst'))->paginate(10);
-        return view('admin.analyst.index', ['analystes' => $analystes]);
+        $analystes = User::whereHas('roles', fn($q) => $q->where('name', 'analyst'))
+            ->latest()
+            ->paginate(10);
+
+        return view('admin.analyst.index', compact('analystes'));
     }
 
     public function create()
@@ -22,66 +29,74 @@ class AnalaystController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8|confirmed',
-            'phone' => 'nullable|string|max:20',
-            'company_name' => 'nullable|string|max:255',
+            'first_name'     => 'required|string|max:255',
+            'last_name'      => 'required|string|max:255',
+            'email'          => 'required|email|max:255|unique:users,email',
+            'phone'          => 'nullable|string|max:30',
+            'company_name'   => 'nullable|string|max:255',
             'account_status' => 'nullable|in:pending,active,inactive',
         ]);
 
+        $statut = $validated['account_status'] ?? 'active';
+        $motDePasse = Str::random(10);
+
         $analyst = User::create([
-            'first_name' => $validated['first_name'],
-            'last_name' => $validated['last_name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'phone' => $validated['phone'],
-            'company_name' => $validated['company_name'],
-            'account_status' => $validated['account_status'] ?? 'pending',
+            'first_name'     => $validated['first_name'],
+            'last_name'      => $validated['last_name'],
+            'email'          => $validated['email'],
+            'password'       => Hash::make($motDePasse),
+            'phone'          => $validated['phone'] ?? null,
+            'company_name'   => $validated['company_name'] ?? null,
+            'account_status' => $statut,
+            'activated_at'   => $statut === 'active' ? now() : null,
         ]);
 
-        $analyst->roles()->attach(Role::where('name', 'analyst')->first());
-        return redirect()->route('admin.analyst.index')->with('success', 'Analyste ajouté.');
+        $analyst->assignRole('analyst');
+
+        Mail::to($analyst->email)->send(new AnalystAccountMail($analyst, $motDePasse));
+
+        return redirect()->route('admin.analyst.index')
+            ->with('success', 'Analyste ajouté. Ses identifiants lui ont été envoyés par email.');
     }
 
     public function show($id)
     {
         $analyst = User::findOrFail($id);
-        return view('admin.analyst.show', ['analyst' => $analyst]);
+
+        return view('admin.analyst.show', compact('analyst'));
     }
 
     public function edit($id)
     {
         $analyst = User::findOrFail($id);
-        return view('admin.analyst.edit', ['analyst' => $analyst]);
+
+        return view('admin.analyst.edit', compact('analyst'));
     }
 
     public function uptade(Request $request, $id)
     {
         $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'phone' => 'nullable|string|max:20',
-            'company_name' => 'nullable|string|max:255',
+            'first_name'     => 'required|string|max:255',
+            'last_name'      => 'required|string|max:255',
+            'email'          => 'required|email|max:255|unique:users,email,' . $id,
+            'phone'          => 'nullable|string|max:30',
+            'company_name'   => 'nullable|string|max:255',
             'account_status' => 'nullable|in:pending,active,inactive',
         ]);
 
         $analyst = User::findOrFail($id);
         $analyst->update($validated);
+
         return redirect()->route('admin.analyst.index')->with('success', 'Analyste mis à jour.');
     }
 
     public function destroy($id)
     {
         User::findOrFail($id)->delete();
+
         return redirect()->route('admin.analyst.index')->with('success', 'Analyste supprimé.');
     }
 
-    /**
-     * Activate an analyst account and send a verification email.
-     */
     public function verify($id)
     {
         $analyst = User::findOrFail($id);
@@ -90,10 +105,9 @@ class AnalaystController extends Controller
         $analyst->activated_at = now();
         $analyst->save();
 
-        // Envoyer l'email de vérification à l'analyste.
         $analyst->sendEmailVerificationNotification();
 
-        return redirect()->route('admin.analyst.index')->with('success', 'Compte analyste activé et email de vérification envoyé.');
+        return redirect()->route('admin.analyst.index')
+            ->with('success', 'Compte analyste activé et email de vérification envoyé.');
     }
 }
-

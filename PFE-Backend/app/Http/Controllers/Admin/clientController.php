@@ -1,21 +1,21 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class clientController extends Controller
 {
-   public function index(Request $request)
+    public function index()
     {
-        $clients = User::with('roles')->wherehas('roles',function($query){
-            $query->where('name','client');
-        })->get();
+        $clients = User::whereHas('roles', fn($q) => $q->where('name', 'client'))
+            ->latest()
+            ->paginate(10);
 
-        return view('admin.client.index',compact('clients'));
+        return view('admin.client.index', compact('clients'));
     }
 
     public function create()
@@ -26,76 +26,76 @@ class clientController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name'  => 'required|string|max:255',
-            'email'      => 'required|string|email|max:255|unique:users',
-            'password'   => 'required|string|min:8|confirmed',
-            'company_name' => 'required|string|max:255',
-            'phone'      => 'nullable|string|max:20',
-            'account_status' => 'nullable|in:pending,active,inactive',
+            'first_name'       => 'required|string|max:255',
+            'last_name'        => 'required|string|max:255',
+            'email'            => 'required|string|email|max:255|unique:users,email',
+            'password'         => 'required|string|min:8|confirmed',
+            'company_name'     => 'required|string|max:255',
+            'phone'            => 'nullable|string|max:30',
+            'account_status'   => 'nullable|in:pending,active,inactive',
             'wants_newsletter' => 'nullable|boolean',
         ]);
 
+        $statut = $validated['account_status'] ?? 'pending';
+
         $client = User::create([
-            'first_name'         => $validated['first_name'],
-            'last_name'          => $validated['last_name'],
-            'email'              => $validated['email'],
-            'password'           => Hash::make($validated['password']),
-            'company_name'       => $validated['company_name'] ?? null,
-            'phone'              => $validated['phone'] ?? null,
-            'account_status'     => $validated['account_status'] ?? 'pending',
-            'activated_at'       => null,
-            'wants_newsletter'   => $validated['wants_newsletter'] ?? false,
-            'newsletter_category'=> $validated['wants_newsletter'] ?? false,
+            'first_name'       => $validated['first_name'],
+            'last_name'        => $validated['last_name'],
+            'email'            => $validated['email'],
+            'password'         => Hash::make($validated['password']),
+            'company_name'     => $validated['company_name'],
+            'phone'            => $validated['phone'] ?? null,
+            'account_status'   => $statut,
+            'activated_at'     => $statut === 'active' ? now() : null,
+            'wants_newsletter' => $request->boolean('wants_newsletter'),
         ]);
 
-        $role = Role::where('name', 'client')->first();
-        $client->roles()->attach($role);
+        $client->assignRole('client');
 
         return redirect()->route('admin.client.index')->with('success', 'Client créé avec succès.');
     }
 
     public function show($id)
     {
-        $client = User::with('roles')->findOrFail($id);
+        $client = User::findOrFail($id);
+
         return view('admin.client.show', compact('client'));
     }
 
     public function edit($id)
     {
         $client = User::findOrFail($id);
+
         return view('admin.client.edit', compact('client'));
     }
 
-   public function uptade(Request $request, $id)
+    public function uptade(Request $request, $id)
     {
         $validated = $request->validate([
-            'first_name'         => 'required|string|max:255',
-            'last_name'          => 'required|string|max:255',
-            'email'              => 'required|string|email|max:255|unique:users,email,'.$id,
-            'password'           => 'required|string|min:8|confirmed',
-            'company_name'       => 'required|string|max:255',
-            'phone'              => 'nullable|string|max:20',
-            'account_status'     => 'nullable|in:pending,active,inactive',
-            'wants_newsletter'   => 'nullable|boolean',
-            'newsletter_category'=> 'nullable|boolean',
+            'first_name'       => 'required|string|max:255',
+            'last_name'        => 'required|string|max:255',
+            'email'            => 'required|string|email|max:255|unique:users,email,' . $id,
+            'company_name'     => 'required|string|max:255',
+            'phone'            => 'nullable|string|max:30',
+            'account_status'   => 'nullable|in:pending,active,inactive',
+            'wants_newsletter' => 'nullable|boolean',
         ]);
+
+        $validated['wants_newsletter'] = $request->boolean('wants_newsletter');
+
         $client = User::findOrFail($id);
         $client->update($validated);
 
         return redirect()->route('admin.client.index')->with('success', 'Client mis à jour avec succès.');
     }
+
     public function destroy($id)
     {
-        $client = User::findOrFail($id);
-        $client->delete();
+        User::findOrFail($id)->delete();
 
         return redirect()->route('admin.client.index')->with('success', 'Client supprimé avec succès.');
     }
 
-    /**
-     * Activate a client account and send a verification email.
-     */
     public function verify($id)
     {
         $client = User::findOrFail($id);
@@ -104,11 +104,9 @@ class clientController extends Controller
         $client->activated_at = now();
         $client->save();
 
-        // Envoyer l'email de vérification au client.
         $client->sendEmailVerificationNotification();
 
-        return redirect()->route('admin.client.index')->with('success', 'Compte client activé et email de vérification envoyé.');
+        return redirect()->route('admin.client.index')
+            ->with('success', 'Compte client activé et email de vérification envoyé.');
     }
-
 }
-

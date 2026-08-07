@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use App\Models\User;
-use Spatie\Permission\Traits\HasRoles;
 
 
 class AuthenticatedSessionController extends Controller

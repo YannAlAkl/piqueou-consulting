@@ -1,43 +1,70 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Modifier Client</title>
-</head>
-<body>
+@extends('layouts.admin')
 
-    <h1>Modifier Client</h1>
+@section('title', 'Modifier un client')
+@section('subtitle', $client->email)
 
-    <form method="POST" action="/clients">
+@section('content')
 
-        <label for="first_name">Prénom</label>
-        <input type="text" name="first_name" id="first_name">
+    <div class="admin-card">
+        <form method="POST" action="{{ route('admin.client.update', $client->id) }}" class="admin-form">
+            @csrf
+            @method('PUT')
 
-        <label for="last_name">Nom</label>
-        <input type="text" name="last_name" id="last_name">
+            <div class="admin-form-grid">
+                <div>
+                    <label for="first_name" class="admin-label">Prénom</label>
+                    <input type="text" name="first_name" id="first_name" class="admin-input"
+                           value="{{ old('first_name', $client->first_name) }}" required>
+                </div>
 
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email">
+                <div>
+                    <label for="last_name" class="admin-label">Nom</label>
+                    <input type="text" name="last_name" id="last_name" class="admin-input"
+                           value="{{ old('last_name', $client->last_name) }}" required>
+                </div>
 
-        <label for="phone">Téléphone (optionnel)</label>
-        <input type="text" name="phone" id="phone">
+                <div>
+                    <label for="email" class="admin-label">Email</label>
+                    <input type="email" name="email" id="email" class="admin-input"
+                           value="{{ old('email', $client->email) }}" required>
+                </div>
 
-        <label for="company_name">Entreprise</label>
-        <input type="text" name="company_name" id="company_name">
+                <div>
+                    <label for="company_name" class="admin-label">Entreprise</label>
+                    <input type="text" name="company_name" id="company_name" class="admin-input"
+                           value="{{ old('company_name', $client->company_name) }}" required>
+                </div>
 
-        <label for="account_status">Statut</label>
-        <select name="account_status" id="account_status">
-            <option value="active">Actif</option>
-            <option value="inactive">Inactif</option>
-            <option value="pending">En attente</option>
-        </select>
+                <div>
+                    <label for="phone" class="admin-label">Téléphone (optionnel)</label>
+                    <input type="text" name="phone" id="phone" class="admin-input"
+                           value="{{ old('phone', $client->phone) }}">
+                </div>
 
-        <label for="wants_newsletter">
-            <input type="checkbox" name="wants_newsletter" id="wants_newsletter" value="1">
-            Souhaite recevoir la newsletter
-        </label>
+                <div>
+                    <label for="account_status" class="admin-label">Statut du compte</label>
+                    <select name="account_status" id="account_status" class="admin-select">
+                        <option value="active" {{ $client->account_status === 'active' ? 'selected' : '' }}>Actif</option>
+                        <option value="pending" {{ $client->account_status === 'pending' ? 'selected' : '' }}>En attente</option>
+                        <option value="inactive" {{ $client->account_status === 'inactive' ? 'selected' : '' }}>Inactif</option>
+                    </select>
+                </div>
+            </div>
 
-        <button type="submit">Mettre à jour</button>
-        <button type="button">Annuler</button>
+            <div>
+                <label class="admin-label">Newsletter</label>
+                <label class="inline-flex items-center gap-2 text-sm text-gray-700">
+                    <input type="checkbox" name="wants_newsletter" value="1" class="admin-checkbox"
+                           {{ $client->wants_newsletter ? 'checked' : '' }}>
+                    Souhaite recevoir la newsletter
+                </label>
+            </div>
 
+            <div class="admin-form-actions">
+                <button type="submit" class="admin-btn admin-btn-blue">Mettre à jour</button>
+                <a href="{{ route('admin.client.index') }}" class="admin-btn admin-btn-gray">Annuler</a>
+            </div>
+        </form>
+    </div>
 
+@endsection
