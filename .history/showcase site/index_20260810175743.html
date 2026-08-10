@@ -78,7 +78,7 @@
               <li><a href="http://localhost:8000/login">Login</a></li>
               <li><a href="http://localhost:8000/register">Signup</a></li>
               <li>
-                <a href="http://localhost:8000/logout" id="logout-btn" style="background:none;border:none;padding:0;cursor:pointer;font:inherit;color:inherit;">Logout</a>
+                <button type="button" id="logout-btn" style="background:none;border:none;padding:0;cursor:pointer;font:inherit;color:inherit;">Logout</button>
               </li>
             </ul>
           </li>
@@ -697,6 +697,35 @@
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/language.js"></script>
+
+  <script>
+    document.getElementById('logout-btn')?.addEventListener('click', async function () {
+      const token = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('XSRF-TOKEN='))
+        ?.split('=')[1];
+
+      if (!token) {
+        alert('Session expirée. Veuillez vous reconnecter.');
+        window.location.href = 'http://localhost:8000/login';
+        return;
+      }
+
+      try {
+        await fetch('http://localhost:8000/logout', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'X-XSRF-TOKEN': decodeURIComponent(token),
+            'Accept': 'application/json'
+          }
+        });
+      } catch (e) {
+        console.error('Erreur lors de la déconnexion:', e);
+      }
+      window.location.href = 'http://localhost:8000/login';
+    });
+  </script>
 
 </body>
 </html>
