@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             \Database\Seeders\AdminUserSeeder::class,
             \Database\Seeders\DemoUsersSeeder::class,
+            QuestionTypeSeeder::class,
+            QuestionnaireSeeder::class,
         ]);
     }
 }

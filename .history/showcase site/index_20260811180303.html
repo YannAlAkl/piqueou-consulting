@@ -70,18 +70,21 @@
           <li><a href="#work-process" data-i18n="nav.process">Notre Processus</a></li>
           <li><a href="newsletter-section.html" data-i18n="nav.newslettre">InfoLettre</a></li>
           <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
-<li class="dropdown">
-<a href="#" class="account-icon"><i class="bi bi-person-circle"></i>
+          <li class="dropdown">
+            <a href="#" class="account-icon"><i class="bi bi-person-circle"></i>
               <i class="bi bi-chevron-down toggle-dropdown"></i>
             </a>
-<ul>
+            <ul>
               <li><a href="http://localhost:8000/login">Login</a></li>
               <li><a href="http://localhost:8000/register">Signup</a></li>
+             @auth
               <li>
-                <button type="button" id="logout-btn" style="background:none;border:none;padding:0;cursor:pointer;font:inherit;color:inherit;">Logout</button>
+                  <a href="http://localhost:8000/logout" id="logout-btn" style="background:none;border:none;padding:0;cursor:pointer;font:inherit;color:inherit;">Logout</a>
               </li>
+             @endauth
             </ul>
           </li>
+       
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -697,35 +700,6 @@
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/language.js"></script>
-
-  <script>
-    document.getElementById('logout-btn')?.addEventListener('click', async function () {
-      const token = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('XSRF-TOKEN='))
-        ?.split('=')[1];
-
-      if (!token) {
-        alert('Session expirée. Veuillez vous reconnecter.');
-        window.location.href = 'http://localhost:8000/login';
-        return;
-      }
-
-      try {
-        await fetch('http://localhost:8000/logout', {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'X-XSRF-TOKEN': decodeURIComponent(token),
-            'Accept': 'application/json'
-          }
-        });
-      } catch (e) {
-        console.error('Erreur lors de la déconnexion:', e);
-      }
-      window.location.href = 'http://localhost:8000/login';
-    });
-  </script>
 
 </body>
 </html>
