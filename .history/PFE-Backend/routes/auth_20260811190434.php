@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
+// Accessible même si une session est déjà ouverte (le bouton "Sign up" doit mener au formulaire).
 Route::get('register', [RegisteredUserController::class, 'create'])
     ->name('register');
 
