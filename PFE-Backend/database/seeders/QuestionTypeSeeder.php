@@ -11,15 +11,15 @@ class QuestionTypeSeeder extends Seeder
     {
         $types = [
             ['name' => 'text'],
-            ['name' => 'yes_no'],
+            ['name' => 'unique_choice'],
             ['name' => 'multiple_choice'],
-            ['name' => 'textarea'],
+
         ];
 
         foreach ($types as $type) {
             QuestionType::updateOrCreate(
-                ['name' => $type['name']],
                 ['name' => $type['name']]
+
             );
         }
     }

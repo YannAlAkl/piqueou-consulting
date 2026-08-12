@@ -15,6 +15,8 @@ class UserQuestionnaireAnswer extends Model
         'questionnaire_id',
         'question_id',
         'answer',
+        'client_comment',
+        'analyst_recommendation',   
         'answered_at',
     ];
 

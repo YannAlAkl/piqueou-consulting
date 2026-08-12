@@ -12,16 +12,12 @@ class Questionnaire extends Model
     use HasFactory;
 
     protected $fillable = [
-        'analyst_id',
         'title',
         'description',
         'status',
     ];
 
-    public function analyst(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'analyst_id');
-    }
+   
 
     public function questions(): HasMany
     {

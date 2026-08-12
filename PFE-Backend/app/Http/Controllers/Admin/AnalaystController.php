@@ -53,10 +53,15 @@ class AnalaystController extends Controller
 
         $analyst->assignRole('analyst');
 
-        Mail::to($analyst->email)->send(new AnalystAccountMail($analyst, $motDePasse));
+        $message = 'Analyste ajouté. Ses identifiants lui ont été envoyés par email.';
 
-        return redirect()->route('admin.analyst.index')
-            ->with('success', 'Analyste ajouté. Ses identifiants lui ont été envoyés par email.');
+        try {
+            Mail::to($analyst->email)->send(new AnalystAccountMail($analyst, $motDePasse));
+        } catch (\Exception $e) {
+            $message = 'Analyste ajouté mais l\'email n\'a pas pu être envoyé. Mot de passe : ' . $motDePasse;
+        }
+
+        return redirect()->route('admin.analyst.index')->with('success', $message);
     }
 
     public function show($id)
@@ -105,9 +110,14 @@ class AnalaystController extends Controller
         $analyst->activated_at = now();
         $analyst->save();
 
-        $analyst->sendEmailVerificationNotification();
+        $message = 'Compte analyste activé et email de vérification envoyé.';
 
-        return redirect()->route('admin.analyst.index')
-            ->with('success', 'Compte analyste activé et email de vérification envoyé.');
+        try {
+            $analyst->sendEmailVerificationNotification();
+        } catch (\Exception $e) {
+            $message = 'Compte analyste activé mais l\'email de vérification n\'a pas pu être envoyé.';
+        }
+
+        return redirect()->route('admin.analyst.index')->with('success', $message);
     }
 }

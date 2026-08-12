@@ -104,9 +104,14 @@ class clientController extends Controller
         $client->activated_at = now();
         $client->save();
 
-        $client->sendEmailVerificationNotification();
+        $message = 'Compte client activé et email de vérification envoyé.';
 
-        return redirect()->route('admin.client.index')
-            ->with('success', 'Compte client activé et email de vérification envoyé.');
+        try {
+            $client->sendEmailVerificationNotification();
+        } catch (\Exception $e) {
+            $message = 'Compte client activé mais l\'email de vérification n\'a pas pu être envoyé.';
+        }
+
+        return redirect()->route('admin.client.index')->with('success', $message);
     }
 }

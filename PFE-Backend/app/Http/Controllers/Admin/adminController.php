@@ -68,8 +68,14 @@ class adminController extends Controller
         $user->activated_at = now();
         $user->save();
 
-        $user->sendEmailVerificationNotification();
+        $message = 'Le compte a été activé. Un email de vérification a été envoyé.';
 
-        return redirect()->route('login')->with('status', 'Le compte a été activé. Un email de vérification a été envoyé.');
+        try {
+            $user->sendEmailVerificationNotification();
+        } catch (\Exception $e) {
+            $message = 'Le compte a été activé mais l\'email de vérification n\'a pas pu être envoyé.';
+        }
+
+        return redirect()->route('login')->with('status', $message);
     }
 }

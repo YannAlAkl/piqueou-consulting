@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -58,12 +59,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Role::class);
     }
 
-    public function questionnaires()
+    public function submissions(): HasMany
     {
-        return $this->hasMany(Questionnaire::class, 'analyst_id');
+        return $this->hasMany(UserQuestionnaire::class, 'user_id');
     }
 
-    public function questionnaireAnswers()
+    public function assignedSubmissions(): HasMany
+    {
+        return $this->hasMany(UserQuestionnaire::class, 'analyst_id');
+    }
+
+    public function questionnaireAnswers(): HasMany
     {
         return $this->hasMany(UserQuestionnaireAnswer::class);
     }

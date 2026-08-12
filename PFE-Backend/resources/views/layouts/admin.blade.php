@@ -31,6 +31,10 @@
                            class="admin-nav-link {{ request()->routeIs('admin.client.*') ? 'admin-nav-link-active' : '' }}">
                             Clients
                         </a>
+                        <a href="{{ route('admin.submission.index') }}"
+                           class="admin-nav-link {{ request()->routeIs('admin.submission.*') ? 'admin-nav-link-active' : '' }}">
+                            Questionnaires envoyés
+                        </a>
                     </div>
                 </div>
 
@@ -65,6 +69,10 @@
 
             @if (session('success'))
                 <div class="admin-alert-success">{{ session('success') }}</div>
+            @endif
+
+            @if (session('error'))
+                <div class="admin-alert-error">{{ session('error') }}</div>
             @endif
 
             @if ($errors->any())

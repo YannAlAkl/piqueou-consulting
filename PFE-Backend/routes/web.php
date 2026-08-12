@@ -5,8 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\adminController;
 use App\Http\Controllers\Admin\AnalaystController;
 use App\Http\Controllers\Admin\clientController;
+use App\Http\Controllers\Admin\SubmissionController;
 use App\Http\Controllers\Analyst\AnalystDashboardController;
 use App\Http\Controllers\Client\ClientDashboardController;
+use App\Http\Controllers\Client\QuestionnaireController;
 use App\Http\Controllers\ProfileController;
 
 
@@ -101,6 +103,13 @@ Route::middleware(['auth', 'role:admin'])
             ->name('client.destroy');
 
 
+        Route::get('/submissions', [SubmissionController::class, 'index'])
+            ->name('submission.index');
+
+        Route::post('/submissions/{id}/assign', [SubmissionController::class, 'assign'])
+            ->name('submission.assign');
+
+
         Route::get('/users/{id}/edit', [adminController::class, 'edit'])
             ->name('user.edit');
 
@@ -139,31 +148,27 @@ Route::middleware(['auth', 'role:client'])
     ->name('client.')
     ->group(function () {
 
-        // Dashboard client
         Route::get(
             '/dashboard',
-            [ClientDashboardController::class, 'index']
+            [ClientDashboardController::class, 'dashboard']
         )->name('dashboard');
 
 
-        // Afficher tous les questionnaires
         Route::get(
             '/questionnaires',
-            [ClientDashboardController::class, 'index']
-        )->name('questionnaire.dashboard');
+            [QuestionnaireController::class, 'index']
+        )->name('questionnaire.index');
 
 
-        // Afficher un questionnaire
         Route::get(
             '/questionnaires/{id}',
-            [ClientDashboardController::class, 'show']
+            [QuestionnaireController::class, 'show']
         )->name('questionnaire.show');
 
 
-        // Envoyer les réponses
         Route::post(
-            '/questionnaires/{id}/submit',
-            [ClientDashboardController::class, 'submit']
+            '/questionnaires/{id}',
+            [QuestionnaireController::class, 'submit']
         )->name('questionnaire.submit');
     });
 
