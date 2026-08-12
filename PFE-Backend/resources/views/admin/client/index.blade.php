@@ -7,9 +7,17 @@
     <a href="{{ route('admin.client.create') }}" class="admin-btn admin-btn-blue">+ Ajouter un client</a>
 @endsection
 
+<link rel="stylesheet" type="text/css" href="resources/css/admin.css">
+
 @section('content')
 
+
     <div class="admin-table-box">
+        <legende>
+           Actif <span class="pastille-verte">sss</span>
+            <span class="admin-badge admin-badge-yellow">En attente</span>
+            <span class="admin-badge admin-badge-red">Inactif</span>
+        </legende>
         <table class="admin-table">
             <thead>
                 <tr>
@@ -24,6 +32,7 @@
                     <th>Actions</th>
                 </tr>
             </thead>
+
             <tbody>
                 @forelse ($clients as $client)
                     <tr>

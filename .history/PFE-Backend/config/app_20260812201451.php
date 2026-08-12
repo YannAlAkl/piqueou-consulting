@@ -53,7 +53,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-    'front_office_url' => env('FRONT_OFFICE_URL', 'http://127.0.0.1:5500/showcase%20site/'),
+    'front_office_url' => env('FRONT_OFFICE_URL', 'http://127.0.0.1:5503/index.html'),
 
 
     /*

@@ -71,19 +71,18 @@
           <li><a href="newsletter-section.html" data-i18n="nav.newslettre">InfoLettre</a></li>
           <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
           <li class="dropdown">
-            <a href="#" class="account-icon"><i class="bi bi-person-circle"></i>
-              <i class="bi bi-chevron-down toggle-dropdown"></i>
-            </a>
-            <ul>
-              <li><a href="http://localhost:8000/login">Login</a></li>
-              <li><a href="http://localhost:8000/register">Signup</a></li>
-             @auth
-              <li>
-                  <a href="http://localhost:8000/logout" id="logout-btn" style="background:none;border:none;padding:0;cursor:pointer;font:inherit;color:inherit;">Logout</a>
-              </li>
-             @endauth
-            </ul>
-          </li>
+          <a href="#" class="account-icon">
+            <i class="bi bi-person-circle"></i>
+            <i class="bi bi-chevron-down toggle-dropdown"></i>
+          </a>
+          <ul>
+            
+              <!-- Affiché UNIQUEMENT si l'utilisateur N'EST PAS connecté -->
+              <li><a href="http://localhost:8000/login" data-i18n="nav.login">Connexion</a></li>
+              <li><a href="http://localhost:8000/register" data-i18n="nav.register">S'inscrire</a></li>
+            
+          </ul>
+        </li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -175,7 +174,7 @@
               <p class="lead" data-i18n="about.lead">
                 Piqueou accompagne les organisations dans la gestion des risques numériques,
                 la mise en conformité réglementaire et la préparation aux certifications
-                internationales en cybersécurité.
+                internationaleens en cybersécurité.
               </p>
               <p data-i18n="about.p">
                 Notre approche combine expertise stratégique et accompagnement opérationnel.

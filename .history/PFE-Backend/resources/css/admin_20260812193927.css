@@ -238,7 +238,7 @@
     }
 
     .pastille-verte {
-        @apply inline-block px-3 py-1 text-[13px] font-medium rounded-full text-center bg-emerald-500 text-white;
+        @apply inline-block rounded-full px-1 py-1 text-xs font-semibold bg-emerald-500 text-white;
     }
 
     .pastille-rouge {
