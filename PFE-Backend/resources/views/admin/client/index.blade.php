@@ -83,12 +83,12 @@
                         <td>
                             <!-- Conteneur flex pour afficher correctement toutes les icônes d'actions -->
                             <div class="flex items-center gap-3" style="display: flex; gap: 10px; align-items: center; white-space: nowrap;">
-                                
+
                                 <!-- Voir -->
                                 <a href="{{ route('admin.client.show', $client->id) }}" class="admin-action admin-action-blue" title="Voir">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                
+
                                 <!-- Modifier -->
                                 <a href="{{ route('admin.client.edit', $client->id) }}" class="admin-action admin-action-yellow" title="Modifier">
                                     <i class="fa-solid fa-pen-to-square"></i>
@@ -114,7 +114,7 @@
                                         <i class="fa-solid fa-trash-can"></i>
                                     </button>
                                 </form>
-                                
+
                             </div>
                         </td>
                     </tr>
