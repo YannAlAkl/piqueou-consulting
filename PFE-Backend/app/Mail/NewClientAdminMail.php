@@ -14,12 +14,12 @@ class NewClientAdminMail extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
-    public $lienActivation;
+    public $lienAdmin;
 
-    public function __construct(User $user, string $lienActivation)
+    public function __construct(User $user, string $lienAdmin)
     {
         $this->user = $user;
-        $this->lienActivation = $lienActivation;
+         $this->lienAdmin = $lienAdmin;
     }
 
     public function envelope(): Envelope
