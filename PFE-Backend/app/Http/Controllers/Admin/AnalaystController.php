@@ -90,6 +90,11 @@ class AnalaystController extends Controller
         ]);
 
         $analyst = User::findOrFail($id);
+
+        if (($validated['account_status'] ?? null) === 'active' && ! $analyst->activated_at) {
+            $validated['activated_at'] = now();
+        }
+
         $analyst->update($validated);
 
         return redirect()->route('admin.analyst.index')->with('success', 'Analyste mis à jour.');

@@ -95,6 +95,6 @@ class AuthenticatedSessionController extends Controller
 
     $request->session()->regenerateToken();
 
-    return redirect()->route('login');
+    return redirect(config('app.front_office_url'));
    }
 }

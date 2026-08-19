@@ -7,10 +7,6 @@
     <a href="{{ route('admin.client.create') }}" class="admin-btn admin-btn-blue">+ Ajouter un client</a>
 @endsection
 
-<!-- Lien CDN indispensable pour afficher les icônes Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" type="text/css" href="resources/css/admin.css">
-
 @section('content')
 
 <!-- Votre légende d'origine inchangée -->
