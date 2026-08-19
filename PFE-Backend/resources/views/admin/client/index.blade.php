@@ -96,7 +96,7 @@
 
                                 <!-- Activer -->
                                 @if ($client->account_status !== 'active')
-                                    <form method="POST" action="{{ route('admin.client.verify', $client->id) }}"
+                                    <form method="POST" action="{{ route('admin.client.activate', $client->id) }}"
                                           onsubmit="return confirm('Activer ce compte client ?');" style="display: inline; margin: 0;">
                                         @csrf
                                         <button type="submit" class="admin-action admin-action-green" title="Activer" style="background: none; border: none; cursor: pointer; padding: 0;">

@@ -17,7 +17,7 @@
     </ul>
 
     <p>
-        <a href="{{ $lienActivation }}" style="color:#ffffff; background-color:#16a34a; padding:10px 18px; text-decoration:none;">
+        <a href="{{ $lienAdmin }}" style="color:#ffffff; background-color:#16a34a; padding:10px 18px; text-decoration:none;">
             Activer ce compte
         </a>
     </p>

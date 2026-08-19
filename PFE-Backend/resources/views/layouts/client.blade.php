@@ -8,6 +8,7 @@
     <title>@yield('title', 'Espace client') - {{ config('app.name') }}</title>
 
     <link rel="stylesheet" href="{{ asset('css/client.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/client-theme.css') }}">
 </head>
 <body class="client-page">
 

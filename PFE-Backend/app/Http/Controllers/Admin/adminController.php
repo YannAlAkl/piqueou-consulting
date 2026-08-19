@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 class adminController extends Controller
 {
+
+    // Montre à l'administrateur la liste des dossiers et la liste des analystes
     public function dashboard()
     {
         $stats = [
@@ -52,7 +54,7 @@ class adminController extends Controller
         return back()->with('success', 'Utilisateur supprimé.');
     }
 
-    public function activate(Request $request, $id, $role)
+    public function activate( $id, $role)
     {
         if (! in_array($role, ['client', 'analyst'])) {
             abort(404);

@@ -47,22 +47,21 @@ class RegisteredUserController extends Controller
             'newsletter_category' => $request->newsletter_category,
         ]);
 
-        $user->assignRole('client');
+    $user->assignRole('client');
 
-        $lienActivation = URL::signedRoute('activate.account', [
-            'id' => $user->id,
-            'role' => 'client',
-        ]);
+    $lienAdmin = route('login');
 
-        $message = 'Votre compte a bien été créé. Un email vous a été envoyé. Il doit être activé par un administrateur avant de pouvoir vous connecter.';
+    $message = 'Votre compte a bien été créé. Un email a été envoyé à l\'administrateur. Il doit être activé par un administrateur avant de pouvoir vous connecter.';
 
-        try {
-            Mail::to($user->email)->send(new ClientRegisteredMail($user));
-            Mail::to(config('services.admin_email'))->send(new NewClientAdminMail($user, $lienActivation));
-        } catch (\Exception $e) {
-            $message = 'Votre compte a bien été créé. Il doit être activé par un administrateur avant de pouvoir vous connecter.';
-        }
+    try {
+        Mail::to($user->email)->send(new ClientRegisteredMail($user));
 
-        return redirect()->route('login')->with('status', $message);
+        Mail::to(config('services.admin_email'))
+            ->send(new NewClientAdminMail($user, $lienAdmin));
+    } catch (\Exception $e) {
+        $message = 'Votre compte a bien été créé. Il doit être activé par un administrateur avant de pouvoir vous connecter.';
+    }
+
+    return redirect()->route('login')->with('status', $message);
     }
 }

@@ -13,7 +13,7 @@ class QuestionnaireController extends Controller
     {
         $questionnaires = UserQuestionnaire::with('user', 'questionnaire')
             ->where('analyst_id', Auth::id())
-            ->whereIn('status', ['submitted', 'under_review'])
+            ->whereIn('status', ['under_review'])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -34,6 +34,7 @@ class QuestionnaireController extends Controller
     {
         $request->validate([
             'conclusion' => 'required|string',
+            'rec'
         ]);
 
         $soumission = UserQuestionnaire::where('analyst_id', Auth::id())

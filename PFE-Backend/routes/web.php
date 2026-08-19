@@ -96,8 +96,8 @@ Route::middleware(['auth', 'role:admin'])
         Route::put('/clients/{id}', [clientController::class, 'uptade'])
             ->name('client.update');
 
-        Route::post('/clients/{id}/verify', [clientController::class, 'verify'])
-            ->name('client.verify');
+       Route::post('/clients/{id}/activate', [clientController::class, 'activate'])
+            ->name('client.activate');
 
         Route::delete('/clients/{id}', [clientController::class, 'destroy'])
             ->name('client.destroy');
@@ -143,7 +143,7 @@ Route::middleware(['auth', 'role:analyst'])
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'role:client'])
+Route::middleware(['auth','verified','role:client'])
     ->prefix('client')
     ->name('client.')
     ->group(function () {

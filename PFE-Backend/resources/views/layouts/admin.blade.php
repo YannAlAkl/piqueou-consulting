@@ -8,6 +8,7 @@
     <title>@yield('title', 'Administration') - {{ config('app.name') }}</title>
 
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin-theme.css') }}">
 </head>
 <body class="admin-page">
 

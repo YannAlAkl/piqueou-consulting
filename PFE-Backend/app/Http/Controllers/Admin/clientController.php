@@ -32,7 +32,7 @@ class clientController extends Controller
             'password'         => 'required|string|min:8|confirmed',
             'company_name'     => 'required|string|max:255',
             'phone'            => 'nullable|string|max:30',
-            'account_status'   => 'nullable|in:pending,active,inactive',
+            'account_status'   => 'nullable|in:pending,,in',
             'wants_newsletter' => 'nullable|boolean',
         ]);
 
@@ -46,7 +46,7 @@ class clientController extends Controller
             'company_name'     => $validated['company_name'],
             'phone'            => $validated['phone'] ?? null,
             'account_status'   => $statut,
-            'activated_at'     => $statut === 'active' ? now() : null,
+            'activated_at'     => $statut === '' ? now() : null,
             'wants_newsletter' => $request->boolean('wants_newsletter'),
         ]);
 
@@ -77,7 +77,7 @@ class clientController extends Controller
             'email'            => 'required|string|email|max:255|unique:users,email,' . $id,
             'company_name'     => 'required|string|max:255',
             'phone'            => 'nullable|string|max:30',
-            'account_status'   => 'nullable|in:pending,active,inactive',
+            'account_status'   => 'nullable|in:pending,,in',
             'wants_newsletter' => 'nullable|boolean',
         ]);
 
@@ -96,22 +96,24 @@ class clientController extends Controller
         return redirect()->route('admin.client.index')->with('success', 'Client supprimé avec succès.');
     }
 
-    public function verify($id)
-    {
-        $client = User::findOrFail($id);
+   public function activate($id)
+{
+    $client = User::findOrFail($id);
 
-        $client->account_status = 'active';
-        $client->activated_at = now();
-        $client->save();
+    $client->account_status = 'active';
+    $client->activated_at = now();
+    $client->save();
 
-        $message = 'Compte client activé et email de vérification envoyé.';
+    try {
+        $client->sendEmailVerificationNotification();
 
-        try {
-            $client->sendEmailVerificationNotification();
-        } catch (\Exception $e) {
-            $message = 'Compte client activé mais l\'email de vérification n\'a pas pu être envoyé.';
+        return redirect()
+            ->route('admin.client.index')
+            ->with('success', 'Compte client activé. Un e-mail de vérification a été envoyé.');
+    } catch (\Exception $e) {
+        return redirect()
+            ->route('admin.client.index')
+            ->with('success', 'Compte client activé, mais l\'e-mail de vérification n\'a pas pu être envoyé.');
         }
-
-        return redirect()->route('admin.client.index')->with('success', $message);
     }
-}
+};
