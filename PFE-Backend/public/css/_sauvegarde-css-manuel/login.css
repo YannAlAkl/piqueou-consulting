@@ -1,0 +1,168 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Raleway:wght@600;700;800&display=swap');
+
+:root {
+  --pq-dark: #0f172a;
+  --pq-dark-2: #111f3a;
+  --pq-green: #22c55e;
+  --pq-teal: #018880;
+  --pq-heading: #003a36;
+  --pq-text: #444d4d;
+  --pq-border: #e2e8f0;
+}
+
+/* ---------- Fond général : dégradé sombre comme la vitrine ---------- */
+body {
+  font-family: "Poppins", system-ui, sans-serif !important;
+  background: linear-gradient(135deg, var(--pq-dark) 0%, var(--pq-dark-2) 55%, #16233f 100%) !important;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 30px 16px;
+}
+
+/* ---------- Carte de connexion / inscription ---------- */
+.login-box,
+.form-container {
+  background: #ffffff !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35) !important;
+  padding: 38px 40px !important;
+  width: 100%;
+  max-width: 420px;
+  border-top: 4px solid var(--pq-green);
+}
+.form-container { max-width: 620px; }
+
+.login-box h1,
+.form-header h1,
+.form-header h2 {
+  font-family: "Raleway", sans-serif !important;
+  color: var(--pq-heading) !important;
+  text-align: center;
+  font-weight: 700 !important;
+  font-size: 1.7rem !important;
+  margin-bottom: 8px !important;
+}
+.form-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.form-header p {
+  color: var(--pq-text);
+  font-size: 0.92rem;
+}
+
+/* ---------- Champs ---------- */
+.form-group { margin-bottom: 18px; }
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.full-width { grid-column: 1 / -1; }
+
+.form-group label {
+  display: block;
+  font-weight: 600 !important;
+  color: var(--pq-heading) !important;
+  margin-bottom: 6px;
+  font-size: 0.88rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="tel"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 14px !important;
+  border: 1px solid var(--pq-border) !important;
+  border-radius: 10px !important;
+  box-sizing: border-box;
+  font-size: 0.92rem;
+  font-family: "Poppins", sans-serif;
+  color: var(--pq-text);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--pq-green) !important;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15) !important;
+}
+
+/* ---------- Messages ---------- */
+.error-message { color: #dc2626; font-size: 0.82rem; margin-top: 4px; }
+.status-message {
+  color: #15803d;
+  background: rgba(34, 197, 94, 0.12);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  margin-bottom: 14px;
+}
+
+/* ---------- Se souvenir / options ---------- */
+.remember-me,
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  color: var(--pq-text);
+  margin-bottom: 16px;
+}
+.remember-me input,
+.checkbox-group input { accent-color: var(--pq-green); }
+
+/* ---------- Actions ---------- */
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+}
+.form-actions a {
+  color: var(--pq-teal) !important;
+  font-size: 0.86rem;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+.form-actions a:hover { color: var(--pq-green) !important; text-decoration: underline; }
+
+/* ---------- Boutons ---------- */
+.btn-login,
+.submit-btn {
+  background: var(--pq-green) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 30px !important;
+  padding: 12px 30px !important;
+  font-weight: 600 !important;
+  font-size: 0.92rem !important;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn-login:hover,
+.submit-btn:hover {
+  background: #16a34a !important;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(34, 197, 94, 0.35);
+}
+.submit-btn { width: 100%; margin-top: 10px; }
+
+.logout-box { text-align: center; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 560px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .login-box, .form-container { padding: 28px 24px !important; }
+}

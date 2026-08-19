@@ -1,0 +1,314 @@
+/* Polices de la vitrine */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Raleway:wght@500;600;700;800&display=swap');
+
+:root {
+  --pq-dark: #0f172a;
+  --pq-dark-2: #111f3a;
+  --pq-surface: #1e293b;
+  --pq-green: #22c55e;
+  --pq-green-light: #4ade80;
+  --pq-teal: #018880;
+  --pq-heading: #003a36;
+  --pq-text: #444d4d;
+  --pq-border: #e2e8f0;
+  --pq-bg: #f6f9f9;
+}
+
+/* ---------- Fond général ---------- */
+body.client-page {
+  font-family: "Poppins", system-ui, sans-serif !important;
+  background-color: var(--pq-bg) !important;
+  color: var(--pq-text) !important;
+}
+
+/* ---------- Barre de navigation (sombre comme la vitrine) ---------- */
+.client-nav {
+  background: linear-gradient(180deg, var(--pq-dark) 0%, var(--pq-dark-2) 100%) !important;
+  border-bottom: 1px solid rgba(34, 197, 94, 0.15) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+  padding: 14px 0 !important;
+}
+
+.client-nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.client-brand {
+  font-family: "Raleway", sans-serif !important;
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+}
+.client-brand:hover { color: var(--pq-green) !important; }
+
+.client-nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.client-nav-link {
+  position: relative;
+  color: rgba(255, 255, 255, 0.82) !important;
+  font-weight: 500 !important;
+  font-size: 0.95rem;
+  text-decoration: none;
+  padding: 6px 2px;
+  transition: color 0.3s ease;
+}
+.client-nav-link::before {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 0; height: 2px;
+  background: linear-gradient(90deg, var(--pq-green), var(--pq-green-light));
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.client-nav-link:hover { color: #ffffff !important; }
+.client-nav-link:hover::before,
+.client-nav-link-active::before { width: 100%; }
+.client-nav-link-active { color: #ffffff !important; }
+
+.client-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 0.9rem;
+}
+
+.client-logout {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+  padding: 7px 16px !important;
+  border-radius: 30px !important;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+.client-logout:hover {
+  background: rgba(34, 197, 94, 0.18) !important;
+  border-color: rgba(34, 197, 94, 0.45) !important;
+}
+
+/* ---------- En-tête de page ---------- */
+.client-header {
+  background: linear-gradient(180deg, var(--pq-dark-2) 0%, #16233f 100%) !important;
+  padding: 42px 0 !important;
+  border-bottom: 1px solid rgba(34, 197, 94, 0.1);
+}
+.client-title {
+  font-family: "Raleway", sans-serif !important;
+  color: #ffffff !important;
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  margin: 0;
+}
+.client-subtitle {
+  color: rgba(203, 213, 225, 0.9) !important;
+  font-size: 1rem !important;
+  margin-top: 0.4rem;
+}
+
+/* ---------- Conteneur / contenu ---------- */
+.client-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.client-content { padding: 32px 0; }
+
+/* ---------- Cartes ---------- */
+.client-card {
+  background: #ffffff !important;
+  border: 1px solid var(--pq-border) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 10px 30px rgba(0, 58, 54, 0.06) !important;
+  padding: 28px !important;
+  margin-bottom: 22px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.client-card:hover {
+  box-shadow: 0 16px 40px rgba(0, 58, 54, 0.1) !important;
+  transform: translateY(-2px);
+}
+.client-card-title {
+  font-family: "Raleway", sans-serif !important;
+  color: var(--pq-heading) !important;
+  font-size: 1.4rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.8rem;
+}
+
+/* ---------- Boutons ---------- */
+.client-btn {
+  display: inline-block;
+  border-radius: 30px !important;
+  padding: 11px 26px !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+/* bouton principal (ex 'client-btn-blue' devient vert) */
+.client-btn-blue,
+.client-btn:not(.client-btn-gray) {
+  background: var(--pq-green) !important;
+  border-color: var(--pq-green) !important;
+  color: #ffffff !important;
+}
+.client-btn-blue:hover,
+.client-btn:not(.client-btn-gray):hover {
+  background: #16a34a !important;
+  border-color: #16a34a !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(34, 197, 94, 0.3);
+}
+/* bouton secondaire */
+.client-btn-gray {
+  background: transparent !important;
+  border: 2px solid var(--pq-teal) !important;
+  color: var(--pq-teal) !important;
+}
+.client-btn-gray:hover {
+  background: var(--pq-teal) !important;
+  color: #ffffff !important;
+}
+
+.client-form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* ---------- Formulaires ---------- */
+.client-label {
+  display: block;
+  font-weight: 600 !important;
+  color: var(--pq-heading) !important;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+}
+.client-required { color: #dc2626; }
+
+.client-textarea,
+.client-page input[type="text"],
+.client-page input[type="email"],
+.client-page input[type="password"],
+.client-page select {
+  width: 100%;
+  border: 1px solid var(--pq-border) !important;
+  border-radius: 10px !important;
+  padding: 11px 14px !important;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.92rem;
+  color: var(--pq-text);
+  background: #fff;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.client-textarea:focus,
+.client-page input:focus,
+.client-page select:focus {
+  outline: none;
+  border-color: var(--pq-green) !important;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15) !important;
+}
+
+/* ---------- Questions du questionnaire ---------- */
+.client-question {
+  border: 1px solid var(--pq-border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  background: #fff;
+  transition: border-color 0.25s ease;
+}
+.client-question:hover { border-color: rgba(34, 197, 94, 0.4); }
+.client-question-title {
+  font-weight: 600 !important;
+  color: var(--pq-heading) !important;
+  margin-bottom: 12px;
+  font-size: 1.05rem;
+}
+.client-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+.client-option:hover { background: rgba(34, 197, 94, 0.07); }
+
+/* recommandation de l'analyste */
+.client-reco {
+  background: rgba(1, 136, 128, 0.08);
+  border-left: 4px solid var(--pq-teal);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-top: 12px;
+  color: var(--pq-heading);
+}
+
+/* ---------- Badges ---------- */
+.client-badge {
+  display: inline-block;
+  padding: 4px 12px !important;
+  border-radius: 30px !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.2px;
+}
+.client-badge-green {
+  background: rgba(34, 197, 94, 0.15) !important;
+  color: #15803d !important;
+}
+.client-badge-yellow {
+  background: rgba(234, 179, 8, 0.15) !important;
+  color: #a16207 !important;
+}
+.client-badge-blue {
+  background: rgba(1, 136, 128, 0.15) !important;
+  color: var(--pq-teal) !important;
+}
+.client-badge-gray {
+  background: rgba(100, 116, 139, 0.15) !important;
+  color: #475569 !important;
+}
+
+/* ---------- Alertes ---------- */
+.client-alert-success {
+  background: rgba(34, 197, 94, 0.12) !important;
+  border: 1px solid rgba(34, 197, 94, 0.35) !important;
+  color: #15803d !important;
+  border-radius: 10px !important;
+  padding: 14px 18px !important;
+  margin-bottom: 18px;
+  font-weight: 500;
+}
+.client-alert-error {
+  background: rgba(220, 38, 38, 0.1) !important;
+  border: 1px solid rgba(220, 38, 38, 0.3) !important;
+  color: #b91c1c !important;
+  border-radius: 10px !important;
+  padding: 14px 18px !important;
+  margin-bottom: 18px;
+  font-weight: 500;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .client-nav-row { flex-wrap: wrap; gap: 12px; }
+  .client-nav-links { gap: 1rem; }
+  .client-title { font-size: 1.5rem !important; }
+  .client-header { padding: 28px 0 !important; }
+}
