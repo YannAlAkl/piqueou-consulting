@@ -42,12 +42,6 @@ class AuthenticatedSessionController extends Controller
                     'email' => 'Votre compte n\'est pas encore activé. Veuillez attendre sa validation par un administrateur.',
                 ]);
             }
-
-            if (!$user->email_is_verified) {
-                return back()->withErrors([
-                    'email' => 'Veuillez vérifier votre adresse e-mail avant de vous connecter.',
-                ]);
-            }
         }
 
         $request->authenticate();

@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Connexion - Piqueou Consulting</title>
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/auth-theme.css') }}">
 </head>
 <body>
     <div class="login-box">

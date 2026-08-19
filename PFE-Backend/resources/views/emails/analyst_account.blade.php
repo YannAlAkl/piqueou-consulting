@@ -14,7 +14,7 @@
     </ul>
 
     <p>
-        <a href="{{ route('login') }}" style="color:#ffffff; background-color:#1d4ed8; padding:10px 18px; text-decoration:none;">
+        <a href="{{ route('login') }}" style="color:#ffffff; background-color:#22c55e; padding:10px 18px; text-decoration:none;">
             Se connecter
         </a>
     </p>
