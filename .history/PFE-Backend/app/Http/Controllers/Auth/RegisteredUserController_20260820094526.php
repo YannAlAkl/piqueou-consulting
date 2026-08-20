@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
@@ -36,21 +37,19 @@ class RegisteredUserController extends Controller
                     ->numbers()
                     ->symbols(),
             ],
-            'phone' => [
-                'nullable',
-                'string',
-                'max:50',
-                'regex:/^(\+?\d{1,3}[- ]?)?\(?\d{3}\)?[- ]?\d{3}[- ]?\d{4}(([- ]?(ext|x|ext\.|#)[- ]?\d{1,5})?)$/i'
-            ],
             'company_name' => ['nullable', 'string', 'max:255'],
+            'phone' => [
+    'nullable',
+    'string',
+    'max:50',
+    'regex:/^(\+?\d{1,3}[- ]?)?\(?\d{3}\)?[- ]?\d{3}[- ]?\d{4}(([- ]?(ext|x|ext\.|#)[- ]?\d{1,5})?)$/i'
+],
             'wants_newsletter' => ['nullable', 'boolean'],
             'newsletter_category' => ['nullable', 'string', 'max:100'],
-        ], [
-            'phone.regex' => 'Le numéro de téléphone doit inclure un code régional valide (ex: (514) 555-0123 ou 514-555-0123).',
         ]);
 
         $user = User::create([
-            'first_name' => $request->first_name,
+            'first_name' => $request-> first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),

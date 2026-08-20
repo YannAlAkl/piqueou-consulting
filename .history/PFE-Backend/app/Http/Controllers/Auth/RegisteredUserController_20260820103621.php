@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+// La ligne "use Illuminate\Support\Facades\URL;" a été supprimée d'ici
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 

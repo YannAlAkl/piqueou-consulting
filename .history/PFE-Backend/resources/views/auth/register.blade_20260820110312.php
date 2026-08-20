@@ -7,9 +7,10 @@
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 </head>
 <body>
+
     <div class="form-container">
         <div class="form-header">
-            <h2>Créer un compte </h2>
+            <h2>Créer un compte professionnel</h2>
         </div>
 
         <form action="/register" method="POST">
@@ -74,14 +75,11 @@
 
                 <!-- phone (NULL) -->
 
-            <div class="form-group">
-                <label for="phone">Téléphone</label>
-                <input type="tel" id="phone" name="phone" value="{{ old('phone') }}" maxlength="50">
-
-                @error('phone')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
+                <div class="form-group">
+                    <label for="phone">Téléphone</label>
+                    <input type="tel" id="phone" name="phone" value="{{ old('phone') }}" maxlength="30">
+                </div>
+                @error->has('')
 
                 <!-- wants_newsletter (tinyint - default 0) -->
                 <div class="form-group full-width checkbox-group">
@@ -108,5 +106,7 @@
             </div>
         </form>
     </div>
+
 </body>
+
 </html>

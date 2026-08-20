@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
@@ -37,15 +38,16 @@ class RegisteredUserController extends Controller
                     ->symbols(),
             ],
             'phone' => [
-                'nullable',
+                'nullable', // Permet de laisser le champ vide
                 'string',
                 'max:50',
-                'regex:/^(\+?\d{1,3}[- ]?)?\(?\d{3}\)?[- ]?\d{3}[- ]?\d{4}(([- ]?(ext|x|ext\.|#)[- ]?\d{1,5})?)$/i'
+                'regex:/^(\+?\d{1,3}[- ]?)?\(?\d{3}\)?[- ]?\d{3}[- ]?\d{4}(([- ]?(ext|x|ext\.|#)[- ]?\d{1,5})?)$/i' // Oblige le bon format si rempli
             ],
             'company_name' => ['nullable', 'string', 'max:255'],
             'wants_newsletter' => ['nullable', 'boolean'],
             'newsletter_category' => ['nullable', 'string', 'max:100'],
         ], [
+            // Message d'erreur personnalisé si la validation regex du téléphone échoue
             'phone.regex' => 'Le numéro de téléphone doit inclure un code régional valide (ex: (514) 555-0123 ou 514-555-0123).',
         ]);
 

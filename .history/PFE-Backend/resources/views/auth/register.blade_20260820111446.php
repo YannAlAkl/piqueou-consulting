@@ -7,9 +7,10 @@
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 </head>
 <body>
+
     <div class="form-container">
         <div class="form-header">
-            <h2>Créer un compte </h2>
+            <h2>Créer un compte professionnel</h2>
         </div>
 
         <form action="/register" method="POST">
@@ -108,5 +109,7 @@
             </div>
         </form>
     </div>
+
 </body>
+
 </html>

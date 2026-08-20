@@ -7,9 +7,10 @@
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 </head>
 <body>
+
     <div class="form-container">
         <div class="form-header">
-            <h2>Créer un compte </h2>
+            <h2>Créer un compte professionnel</h2>
         </div>
 
         <form action="/register" method="POST">
@@ -83,6 +84,8 @@
                 @enderror
             </div>
 
+
+
                 <!-- wants_newsletter (tinyint - default 0) -->
                 <div class="form-group full-width checkbox-group">
                     <input type="hidden" name="wants_newsletter" value="0">
@@ -108,5 +111,7 @@
             </div>
         </form>
     </div>
+
 </body>
+
 </html>
