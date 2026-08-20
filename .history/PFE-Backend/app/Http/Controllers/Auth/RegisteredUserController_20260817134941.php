@@ -28,15 +28,7 @@ class RegisteredUserController extends Controller
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['nullable', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class, new ProfessionalEmail()],
-            'password' => [
-                'required',
-                'confirmed',
-                Rules\Password::min(8)
-                    ->letters()
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols(),
-            ],
+            'password' => ['required', 'confirmed', Rules\Password::min(8)],
             'company_name' => ['nullable', 'string', 'max:255'],
             'phone' => ['nullable', 'string', 'max:30'],
             'wants_newsletter' => ['nullable', 'boolean'],
@@ -55,21 +47,21 @@ class RegisteredUserController extends Controller
             'newsletter_category' => $request->newsletter_category,
         ]);
 
-        $user->assignRole('client');
+    $user->assignRole('client');
 
-        $lienAdmin = route('login');
+    $lienAdmin = route('login');
 
-        $message = 'Votre compte a bien été créé. Un email a été envoyé à l\'administrateur. Il doit être activé par un administrateur avant de pouvoir vous connecter.';
+    $message = 'Votre compte a bien été créé. Un email a été envoyé à l\'administrateur. Il doit être activé par un administrateur avant de pouvoir vous connecter.';
 
-        try {
-            Mail::to($user->email)->send(new ClientRegisteredMail($user));
+    try {
+        Mail::to($user->email)->send(new ClientRegisteredMail($user));
 
-            Mail::to(config('services.admin_email'))
-                ->send(new NewClientAdminMail($user, $lienAdmin));
-        } catch (\Exception $e) {
-            $message = 'Votre compte a bien été créé. Il doit être activé par un administrateur avant de pouvoir vous connecter.';
-        }
+        Mail::to(config('services.admin_email'))
+            ->send(new NewClientAdminMail($user, $lienAdmin));
+    } catch (\Exception $e) {
+        $message = 'Votre compte a bien été créé. Il doit être activé par un administrateur avant de pouvoir vous connecter.';
+    }
 
-        return redirect()->route('login')->with('status', $message);
+    return redirect()->route('login')->with('status', $message);
     }
 }
