@@ -56,7 +56,29 @@ class AuthenticatedSessionController extends Controller
         }
         return redirect()->route('dashboard');
 
-    
+        
+
+        // if ($user->hasRole('admin')) {
+        //     return redirect()->intended(
+        //         route('admin.dashboard', absolute: false)
+        //     );
+        // }
+
+        // if ($user->hasRole('analyst')) {
+        //     return redirect()->intended(
+        //         route('analyst.dashboard', absolute: false)
+        //     );
+        // }
+
+        // if ($user->hasRole('client')) {
+        //     return redirect()->intended(
+        //         route('client.dashboard', absolute: false)
+        //     );
+        // }
+
+        return redirect()->intended(
+            route('dashboard', absolute: false)
+        );
     }
     /**
      * Destroy an authenticated session.
