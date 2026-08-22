@@ -1,28 +1,27 @@
-@extends('layouts.app')
+@extends('layouts.analyst')
 
-@section('header')
-    <h2 class="text-xl font-semibold text-gray-800">Espace analyste</h2>
-@endsection
+@section('title', 'Espace analyste')
+@section('subtitle', 'Vue générale des dossiers qui vous sont confiés.')
 
 @section('content')
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white shadow-sm rounded-lg p-6">
-                <h1 class="text-2xl font-bold text-gray-900">Bonjour {{ Auth::user()->name }}</h1>
-                <p class="mt-2 text-sm text-gray-600">
-                    Vous êtes connecté en tant qu'analyste. Les questionnaires qui vous sont assignés
-                    apparaîtront ici.
-                </p>
 
-                <p class="mt-6 text-sm text-gray-500">
-                    Questionnaires assignés : {{ $total ?? 0 }}
-                </p>
-                <a href="{{ route('analyst.questionnaire.index') }}"
-                    class="mt-4 inline-block text-sm font-medium text-indigo-600 hover:text-indigo-800">
-                    Voir les questionnaires &rarr;
-                </a>
-                
-            </div>
-        </div>
+    <div class="analyst-card">
+        <h2 class="analyst-card-title">Bonjour {{ Auth::user()->name }}</h2>
+        <p class="text-sm text-gray-600">
+            Les questionnaires envoyés par les clients et assignés par l'administrateur
+            apparaissent dans vos dossiers à analyser.
+        </p>
     </div>
+
+    <div class="analyst-stat">
+        <p class="analyst-stat-value">{{ $total ?? 0 }}</p>
+        <p class="analyst-stat-label">Dossier(s) en attente de votre analyse</p>
+    </div>
+
+    <div class="analyst-form-actions">
+        <a href="{{ route('analyst.questionnaire.index') }}" class="analyst-btn analyst-btn-blue">
+            Voir mes dossiers
+        </a>
+    </div>
+
 @endsection

@@ -15,6 +15,8 @@ export default {
         'admin-action-blue', 'admin-action-green', 'admin-action-yellow', 'admin-action-red',
         'client-badge-green', 'client-badge-yellow', 'client-badge-blue', 'client-badge-gray',
         'client-btn-blue', 'client-btn-gray',
+        'analyst-badge-green', 'analyst-badge-yellow', 'analyst-badge-blue', 'analyst-badge-gray',
+        'analyst-btn-blue', 'analyst-btn-gray',
         'pastille-verte', 'pastille-jaune', 'pastille-rouge',
     ],
 

@@ -1,53 +1,54 @@
-@extends('layouts.client')
+@extends('layouts.analyst')
 
-@section('title', 'Questionnaires à analyser')
+@section('title', 'Dossiers à analyser')
 @section('subtitle', 'Les soumissions clients qui vous sont assignées.')
 
 @section('content')
 
     @forelse ($questionnaires as $soumission)
 
-        <div class="client-card mb-6">
-            <h2 class="client-card-title">
+        <div class="analyst-card">
+            <h2 class="analyst-card-title">
                 {{ $soumission->questionnaire->title ?? 'Questionnaire' }}
             </h2>
 
             <p class="text-sm text-gray-600">
                 Client : {{ $soumission->user->name ?? 'Inconnu' }}
+                @if ($soumission->user && $soumission->user->company_name)
+                    ({{ $soumission->user->company_name }})
+                @endif
             </p>
 
             <p class="mt-4 text-sm">
                 Statut :
                 @if ($soumission->status === 'submitted')
-                    <span class="client-badge client-badge-yellow">À analyser</span>
+                    <span class="analyst-badge analyst-badge-yellow">À analyser</span>
                 @elseif ($soumission->status === 'under_review')
-                    <span class="client-badge client-badge-blue">En cours d'analyse</span>
+                    <span class="analyst-badge analyst-badge-blue">En cours d'analyse</span>
+                @elseif ($soumission->status === 'completed')
+                    <span class="analyst-badge analyst-badge-green">Terminé</span>
                 @else
-                    <span class="client-badge client-badge-gray">{{ $soumission->status }}</span>
+                    <span class="analyst-badge analyst-badge-gray">{{ $soumission->status }}</span>
                 @endif
             </p>
 
             @if ($soumission->submitted_at)
-                <p class="text-xs text-gray-500 mt-1">
-                    Envoyé le {{ $soumission->submitted_at->format('d/m/Y H:i') }}
+                <p class="analyst-meta">
+                    Envoyé le {{ $soumission->submitted_at->format('d/m/Y à H:i') }}
                 </p>
             @endif
 
-            <div class="mt-4 flex gap-2">
+            <div class="analyst-form-actions">
                 <a href="{{ route('analyst.questionnaire.show', $soumission->id) }}"
-                   class="client-btn client-btn-gray">
-                    Voir le questionnaire
-                </a>
-                <a href="{{ route('analyst.questionnaire.show', $soumission->id) }}"
-                   class="client-btn client-btn-blue">
-                    Analyser
+                   class="analyst-btn analyst-btn-blue">
+                    Analyser ce dossier
                 </a>
             </div>
         </div>
 
     @empty
-        <div class="client-card">
-            <p>Aucune soumission à analyser pour le moment.</p>
+        <div class="analyst-card">
+            <p>Aucun dossier à analyser pour le moment.</p>
         </div>
     @endforelse
 

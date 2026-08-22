@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Analyst;
 
 use App\Http\Controllers\Controller;
 use App\Models\UserQuestionnaire;
+use App\Models\UserQuestionnaireAnswer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,8 +14,7 @@ class QuestionnaireController extends Controller
     {
         $questionnaires = UserQuestionnaire::with('user', 'questionnaire')
             ->where('analyst_id', Auth::id())
-            ->where('status',  'under_review')
-            ->orderBy('created_at', 'desc')
+            ->where('status', 'under_review')
             ->get();
 
         return view('analyst.questionnaire.index', compact('questionnaires'));
@@ -24,10 +24,15 @@ class QuestionnaireController extends Controller
     {
         $soumission = UserQuestionnaire::with('questionnaire.questions.type', 'user')
             ->where('analyst_id', Auth::id())
-            ->where('status',  'under_review')
+            ->where('status', 'under_review')
             ->findOrFail($id);
 
-        return view('analyst.questionnaire.show', compact('soumission'));
+        $reponses = UserQuestionnaireAnswer::where('user_id', $soumission->user_id)
+            ->where('questionnaire_id', $soumission->questionnaire_id)
+            ->get()
+            ->keyBy('question_id');
+
+        return view('analyst.questionnaire.show', compact('soumission', 'reponses'));
     }
 
     public function store(Request $request, int $id)
@@ -40,13 +45,11 @@ class QuestionnaireController extends Controller
             ->where('status', 'under_review')
             ->findOrFail($id);
 
-        $soumission->update([
-            'conclusion' => $request->input('conclusion'),
-            'status'     => 'under_review',
-        ]);
+        $soumission->conclusion = $request->input('conclusion');
+        $soumission->save();
 
         return redirect()
             ->route('analyst.questionnaire.index')
-            ->with('success', 'Recommandation ajoutée avec succès.');
+            ->with('success', 'Conclusion enregistrée avec succès.');
     }
 }

@@ -80,7 +80,9 @@
         <div class="admin-form-actions mt-6">
             @if ($client->account_status !== 'active')
                 <form method="POST" action="{{ route('admin.client.verify', $client->id) }}"
-                      onsubmit="return confirm('Activer ce compte client ?');">
+                      data-confirm-title="Activer ce compte"
+                      data-confirm-text="Le client pourra se connecter et un email de vérification lui sera envoyé."
+                      data-confirm-button="Activer le compte">
                     @csrf
                     <button type="submit" class="admin-btn admin-btn-green">Activer</button>
                 </form>

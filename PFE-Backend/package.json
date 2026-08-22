@@ -6,8 +6,7 @@
         "dev": "concurrently \"npm run dev:assets\" \"php artisan serve\"",
         "dev:assets": "vite",
         "build": "vite build",
-        "css": "tailwindcss -i resources/css/admin.css -o public/css/admin.css --minify && tailwindcss -i resources/css/client.css -o public/css/client.css --minify && tailwindcss -i resources/css/login.css -o public/css/login.css --minify",
-        "css:watch": "tailwindcss -i resources/css/admin.css -o public/css/admin.css --watch"
+        "css": "tailwindcss -i resources/css/admin.css -o public/css/admin.css --minify && tailwindcss -i resources/css/client.css -o public/css/client.css --minify && tailwindcss -i resources/css/analyst.css -o public/css/analyst.css --minify && tailwindcss -i resources/css/login.css -o public/css/login.css --minify"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",

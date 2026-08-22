@@ -71,7 +71,9 @@
         <div class="admin-form-actions mt-6">
             @if ($analyst->account_status !== 'active')
                 <form method="POST" action="{{ route('admin.analyst.verify', $analyst->id) }}"
-                      onsubmit="return confirm('Activer ce compte analyste ?');">
+                      data-confirm-title="Activer ce compte"
+                      data-confirm-text="L'analyste pourra se connecter et un email de vérification lui sera envoyé."
+                      data-confirm-button="Activer le compte">
                     @csrf
                     <button type="submit" class="admin-btn admin-btn-green">Activer</button>
                 </form>

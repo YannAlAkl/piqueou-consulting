@@ -92,5 +92,80 @@
         </div>
     </main>
 
+    <div class="admin-modal" id="admin-modal">
+        <div class="admin-modal-box">
+            <div class="admin-modal-icon" id="admin-modal-icon"></div>
+            <h3 class="admin-modal-title" id="admin-modal-title"></h3>
+            <p class="admin-modal-text" id="admin-modal-text"></p>
+
+            <div class="admin-modal-actions">
+                <button type="button" class="admin-btn admin-btn-gray" id="admin-modal-cancel">Annuler</button>
+                <button type="button" class="admin-btn" id="admin-modal-ok"></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var fenetre  = document.getElementById('admin-modal');
+            var icone    = document.getElementById('admin-modal-icon');
+            var titre    = document.getElementById('admin-modal-title');
+            var texte    = document.getElementById('admin-modal-text');
+            var valider  = document.getElementById('admin-modal-ok');
+            var annuler  = document.getElementById('admin-modal-cancel');
+            var formulaire = null;
+
+            function ouvrir(form) {
+                formulaire = form;
+
+                var danger = form.dataset.confirmType === 'danger';
+
+                titre.textContent   = form.dataset.confirmTitle || 'Confirmation';
+                texte.textContent   = form.dataset.confirmText || '';
+                valider.textContent = form.dataset.confirmButton || 'Confirmer';
+                valider.className   = 'admin-btn ' + (danger ? 'admin-btn-red' : 'admin-btn-green');
+                icone.className     = 'admin-modal-icon ' + (danger ? 'admin-modal-icon-danger' : 'admin-modal-icon-success');
+                icone.innerHTML     = danger
+                    ? '<i class="fa-solid fa-triangle-exclamation"></i>'
+                    : '<i class="fa-solid fa-circle-check"></i>';
+
+                fenetre.classList.add('admin-modal-open');
+                valider.focus();
+            }
+
+            function fermer() {
+                fenetre.classList.remove('admin-modal-open');
+                formulaire = null;
+            }
+
+            document.querySelectorAll('form[data-confirm-text]').forEach(function (form) {
+                form.addEventListener('submit', function (evenement) {
+                    evenement.preventDefault();
+                    ouvrir(form);
+                });
+            });
+
+            valider.addEventListener('click', function () {
+                if (formulaire) {
+                    formulaire.submit();
+                }
+            });
+
+            annuler.addEventListener('click', fermer);
+
+            fenetre.addEventListener('click', function (evenement) {
+                if (evenement.target === fenetre) {
+                    fermer();
+                }
+            });
+
+            document.addEventListener('keydown', function (evenement) {
+                if (evenement.key === 'Escape') {
+                    fermer();
+                }
+            });
+        })();
+    </script>
+
 </body>
 </html>

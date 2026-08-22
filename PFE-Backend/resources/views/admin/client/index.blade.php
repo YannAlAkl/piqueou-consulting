@@ -93,7 +93,10 @@
                                 <!-- Activer -->
                                 @if ($client->account_status !== 'active')
                                     <form method="POST" action="{{ route('admin.client.activate', $client->id) }}"
-                                          onsubmit="return confirm('Activer ce compte client ?');" style="display: inline; margin: 0;">
+                                          data-confirm-title="Activer ce compte"
+                                          data-confirm-text="Le client pourra se connecter et un email de vérification lui sera envoyé."
+                                          data-confirm-button="Activer le compte"
+                                          style="display: inline; margin: 0;">
                                         @csrf
                                         <button type="submit" class="admin-action admin-action-green" title="Activer" style="background: none; border: none; cursor: pointer; padding: 0;">
                                             <i class="fa-solid fa-circle-check"></i>
@@ -103,7 +106,11 @@
 
                                 <!-- Supprimer -->
                                 <form method="POST" action="{{ route('admin.client.destroy', $client->id) }}"
-                                      onsubmit="return confirm('Confirmer la suppression ?');" style="display: inline; margin: 0;">
+                                      data-confirm-type="danger"
+                                      data-confirm-title="Supprimer ce client"
+                                      data-confirm-text="Le compte et toutes ses réponses au questionnaire seront définitivement supprimés. Cette action est irréversible."
+                                      data-confirm-button="Supprimer définitivement"
+                                      style="display: inline; margin: 0;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="admin-action admin-action-red" title="Supprimer" style="background: none; border: none; cursor: pointer; padding: 0;">
