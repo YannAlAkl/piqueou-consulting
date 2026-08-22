@@ -108,8 +108,7 @@
                                 <form method="POST" action="{{ route('admin.client.destroy', $client->id) }}"
                                       data-confirm-type="danger"
                                       data-confirm-title="Supprimer ce client"
-                                      data-confirm-text="Le compte et toutes ses réponses au questionnaire seront définitivement supprimés. Cette action est irréversible. Vous pouver le desactiver si vous souhaitez en passant vers modifier"
-
+                                      data-confirm-text="Le compte et toutes ses réponses au questionnaire seront définitivement supprimés. Cette action est irréversible. vous pouver desact"
                                       data-confirm-button="Supprimer définitivement"
                                       style="display: inline; margin: 0;">
                                     @csrf
